@@ -1,9 +1,12 @@
 package ru.yandex.practicum.filmorate.exceptions;
 
-public class ValidationException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public ValidationException(String massage) {
-        super(massage);
+public class ValidationException extends ResponseStatusException {
+
+    public ValidationException(HttpStatus status, String massage) {
+        super(status, massage);
     }
 
     public String getMassage() {

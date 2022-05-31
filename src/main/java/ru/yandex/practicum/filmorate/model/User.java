@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class User {
-    @Min(value = 0, message = "id не должен быть отрицательным")
     private int id;
     @NotNull(message = "Электронная почта не может быть пустой")
     @NotBlank(message = "Электронная почта не может быть пустой")

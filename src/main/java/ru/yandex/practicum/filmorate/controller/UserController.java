@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -36,7 +37,7 @@ public class UserController {
 
         int id = user.getId();
         if(!users.containsKey(id)) {
-            throw new ValidationException("Не найдена запись с id = " + id);
+            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Не найдена запись с id = " + id);
         }
         dataCheck(user);
         users.put(id, user);
@@ -53,7 +54,7 @@ public class UserController {
         String name = user.getName();
 
         if (login.contains(" ")) {
-            throw new ValidationException("Логин не может содержать пробелы");
+            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Логин не может содержать пробелы");
         }
 
         if (name == null || name.isBlank()) {

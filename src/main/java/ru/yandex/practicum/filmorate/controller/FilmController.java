@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -39,7 +40,7 @@ public class FilmController {
 
         int id = film.getId();
         if(!films.containsKey(id)) {
-            throw new ValidationException("Не найдена запись с id = " + id);
+            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Не найдена запись с id = " + id);
         }
 
         dataCheck(film);
@@ -52,10 +53,10 @@ public class FilmController {
         return films.values();
     }
 
-    private void dataCheck(Film film) throws ValidationException{
+    private void dataCheck(Film film) {
         LocalDate date = film.getReleaseDate();
         if (date.isBefore(BIRTHDAY_MOVIE)) {
-            throw new ValidationException("Дата релиза раньше 28 декабря 1895 года");
+            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Дата релиза раньше 28 декабря 1895 года");
         }
     }
 }

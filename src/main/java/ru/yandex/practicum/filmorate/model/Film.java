@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Data
 public class Film {
-    @Min(value = 0, message = "id не должен быть отрицательным")
     private int id;
     @NotNull(message = "Имя не может быть пустым")
     @NotBlank(message = "Имя не может быть пустым")
