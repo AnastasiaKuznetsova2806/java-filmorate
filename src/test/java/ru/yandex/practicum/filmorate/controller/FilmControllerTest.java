@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.utils.LocalDateAdapter;
+import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -53,25 +53,14 @@ class FilmControllerTest {
     }
 
     @Test
-    public void test3_createFilmWithReleaseDateNoEarlier12_28_1895() {
-        final LocalDate date = LocalDate.of(1009,1,1);
-        final ValidationException exception = assertThrows(ValidationException.class, () -> {
-            Film film = new Film("Аватар", "Научно-фантастический фильм", date, 162);
-            filmController = new FilmController();
-            filmController.createFilm(film);
-        });
-        assertEquals("Дата релиза раньше 28 декабря 1895 года", exception.getMassage());
-    }
-
-    @Test
-    public void test4_createFilmWithNegativeDuration() {
+    public void test3_createFilmWithNegativeDuration() {
         Film film = new Film("Аватар", "Научно-фантастический фильм", dateRelease, -162);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertTrue(violations.toString().contains("Продолжительность фильма должна быть положительной"));
     }
 
     @Test
-    public void test5_createFilm() {
+    public void test4_createFilm() {
         Film result = createFilm();
         assertEquals(
                 "Film(id=1, name=Аватар, description=Научно-фантастический фильм, " +
@@ -81,7 +70,7 @@ class FilmControllerTest {
     }
 
     @Test
-    public void test6_updateFilmWithNonExistentId() {
+    public void test5_updateFilmWithNonExistentId() {
         String json = "{\n" +
                         "  \"id\": -1,\n" +
                         "  \"name\": \"Аватар Updated\",\n" +
@@ -99,11 +88,14 @@ class FilmControllerTest {
             filmController = new FilmController();
             filmController.updateFilm(film);
         });
-        assertEquals("Не найдена запись с id = -1", exception.getMassage());
+        assertEquals(
+                "500 INTERNAL_SERVER_ERROR \"Не найдена запись с id = -1\"",
+                exception.getMassage()
+        );
     }
 
     @Test
-    public void test7_updateFilm() {
+    public void test6_updateFilm() {
         createFilm();
         String json = "{\n" +
                 "  \"id\": 1,\n" +
@@ -127,7 +119,7 @@ class FilmControllerTest {
     }
 
     @Test
-    public void test8_findAllFilms() {
+    public void test7_findAllFilms() {
         createFilm();
         Collection<Film> films = filmController.findAllFilms();
         assertEquals(

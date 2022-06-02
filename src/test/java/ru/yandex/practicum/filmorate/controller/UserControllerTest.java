@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.utils.LocalDateAdapter;
+import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -53,27 +53,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void test4_createUserWithLoginWithSpaces() {
-        final ValidationException exception = assertThrows(ValidationException.class, () -> {
-            User user = new User("email@mail.ru", "log in", "name", birthday);
-            userController = new UserController();
-            userController.createUser(user);
-        });
-        assertEquals("Логин не может содержать пробелы", exception.getMassage());
-    }
-
-    @Test
-    public void test5_createUserWithEmptyName() {
-        User user = new User("email@mail.ru", "login", "", birthday);
-        userController = new UserController();
-        User result = userController.createUser(user);
-        assertEquals("User{id=1, email='email@mail.ru', login='login', name='login', birthday=2013-10-28}",
-                result.toString()
-        );
-    }
-
-    @Test
-    public void test6_createUserWithFutureBirthday() {
+    public void test4_createUserWithFutureBirthday() {
         LocalDate futureDay = LocalDate.of(2023, 12,14);
         User user = new User("email@mail.ru", "login", "name", futureDay);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -81,16 +61,16 @@ class UserControllerTest {
     }
 
     @Test
-    public void test7_createUser() {
+    public void test5_createUser() {
         User result = createUser();
         assertEquals(
-                "User{id=1, email='email@mail.ru', login='login', name='name', birthday=2013-10-28}",
+                "User(id=1, email=email@mail.ru, login=login, name=name, birthday=2013-10-28)",
                 result.toString()
         );
     }
 
     @Test
-    public void test8_updateUserWithNonExistentId() {
+    public void test6_updateUserWithNonExistentId() {
         String json = "{\n" +
                 "  \"login\": \"login\",\n" +
                 "  \"name\": \"name\",\n" +
@@ -107,11 +87,14 @@ class UserControllerTest {
             userController = new UserController();
             userController.updateUser(user);
         });
-        assertEquals("Не найдена запись с id = -1", exception.getMassage());
+        assertEquals(
+                "500 INTERNAL_SERVER_ERROR \"Не найдена запись с id = -1\"",
+                exception.getMassage()
+        );
     }
 
     @Test
-    public void test9_updateUser() {
+    public void test7_updateUser() {
         createUser();
         String json = "{\n" +
                 "  \"login\": \"loginUpdate\",\n" +
@@ -127,18 +110,18 @@ class UserControllerTest {
 
         User result = userController.updateUser(user);
         assertEquals(
-                "User{id=1, email='email@yandex.ru', login='loginUpdate', name='name', birthday=2013-10-28}",
+                "User(id=1, email=email@yandex.ru, login=loginUpdate, name=name, birthday=2013-10-28)",
                 result.toString()
         );
     }
 
     @Test
-    public void test10_findAllUsers() {
+    public void test8_findAllUsers() {
         createUser();
         Collection<User> users = userController.findAllUsers();
         System.out.println(users);
         assertEquals(
-                "[User{id=1, email='email@mail.ru', login='login', name='name', birthday=2013-10-28}]",
+                "[User(id=1, email=email@mail.ru, login=login, name=name, birthday=2013-10-28)]",
                 users.toString()
         );
     }

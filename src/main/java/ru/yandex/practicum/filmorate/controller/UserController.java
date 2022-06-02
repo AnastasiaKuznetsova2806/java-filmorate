@@ -3,8 +3,9 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validation.DataValidation;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class UserController {
     private int id = 0;
     private final Map<Integer, User> users = new HashMap<>();
+    private final DataValidation dataValidation = new DataValidation();
 
     private int increaseId() {
         return ++id;
@@ -25,7 +27,7 @@ public class UserController {
     public User createUser( @Valid @RequestBody User user) {
         log.info("Получен запрос на добавление объекта: '{}'", user);
 
-        dataCheck(user);
+        dataValidation.userdataVerification(user);
         user.setId(increaseId());
         users.put(user.getId(), user);
         return user;
@@ -39,7 +41,7 @@ public class UserController {
         if(!users.containsKey(id)) {
             throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Не найдена запись с id = " + id);
         }
-        dataCheck(user);
+        dataValidation.userdataVerification(user);
         users.put(id, user);
         return user;
     }
@@ -47,18 +49,5 @@ public class UserController {
     @GetMapping(value = "/users")
     public Collection<User> findAllUsers() {
         return users.values();
-    }
-
-    private void dataCheck(User user) {
-        String login = user.getLogin();
-        String name = user.getName();
-
-        if (login.contains(" ")) {
-            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Логин не может содержать пробелы");
-        }
-
-        if (name == null || name.isBlank()) {
-            user.setName(login);
-        }
     }
 }

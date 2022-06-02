@@ -3,11 +3,11 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.validation.DataValidation;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +15,9 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class FilmController {
-    private static final LocalDate BIRTHDAY_MOVIE = LocalDate.of(1895, 12, 28);
     private int id = 0;
-
     private final Map<Integer, Film> films = new HashMap<>();
+    private final DataValidation dataValidation = new DataValidation();
 
     private int increaseId() {
         return ++id;
@@ -28,7 +27,7 @@ public class FilmController {
     public Film createFilm(@Valid @RequestBody Film film) {
         log.info("Получен запрос на добавление объекта: '{}'", film);
 
-        dataCheck(film);
+        dataValidation.filmDataVerification(film);
         film.setId(increaseId());
         films.put(film.getId(), film);
         return film;
@@ -43,7 +42,7 @@ public class FilmController {
             throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Не найдена запись с id = " + id);
         }
 
-        dataCheck(film);
+        dataValidation.filmDataVerification(film);
         films.put(id, film);
         return film;
     }
@@ -51,12 +50,5 @@ public class FilmController {
     @GetMapping(value = "/films")
     public Collection<Film> findAllFilms() {
         return films.values();
-    }
-
-    private void dataCheck(Film film) {
-        LocalDate date = film.getReleaseDate();
-        if (date.isBefore(BIRTHDAY_MOVIE)) {
-            throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, "Дата релиза раньше 28 декабря 1895 года");
-        }
     }
 }
