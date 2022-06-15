@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,57 +22,75 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public InMemoryUserStorage getUserStorage() {
-        return userStorage;
+    //Создание пользователя
+    public User createUser(User user) {
+        return userStorage.createUser(user);
     }
 
-    //добавление в друзья
-    public void addingToFriends(Long id, Long friendId) {
+    //Обновление пользователя
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
+    }
+
+    //Получение списка всех пользователей
+    public Collection<User> findAllUsers() {
+        return userStorage.findAllUsers();
+    }
+
+    //Получение пользователя по уникальному идентификатору
+    public User findUserById(Long id) {
+        return userStorage.findUserById(id);
+    }
+
+    //Добавление в друзья
+    public void addToFriends(Long id, Long friendId) {
         checkId(id);
         checkId(friendId);
 
-        userStorage.getUsers().get(id).getFriends().add(friendId);
-        userStorage.getUsers().get(friendId).getFriends().add(id);
+        User user = findUserById(id);
+        user.getFriends().add(friendId);
+
+        User friend = findUserById(friendId);
+        friend.getFriends().add(id);
     }
 
-    //удаление из друзей
+    //Удаление из друзей
     public void unfriending(Long id, Long friendId) {
         checkId(id);
         checkId(friendId);
 
-        userStorage.getUsers().get(id).getFriends().remove(friendId);
-        userStorage.getUsers().get(friendId).getFriends().remove(id);
+        User user = findUserById(id);
+        user.getFriends().remove(friendId);
+
+        User friend = findUserById(friendId);
+        friend.getFriends().remove(id);
     }
 
-    //список пользователей, являющихся друзьями.
+    //Список пользователей, являющихся друзьями.
     public List<User> findFriendList(Long id) {
         checkId(id);
-        List<User> friendsList = new ArrayList<>();
 
-        Set<Long> friendListId = userStorage.getUsers().get(id).getFriends();
-        for (Long idFriend : friendListId) {
-            friendsList.add(userStorage.findUserById(idFriend));
-        }
-        return friendsList;
+        User user = findUserById(id);
+        Set<Long> friendListId = user.getFriends();
+        return fillUsersList(friendListId);
     }
 
-    //вывод списка общих друзей
+    //Вывод списка общих друзей
     public List<User> findListOfCommonFriends(Long id, Long otherId) {
         checkId(id);
         checkId(otherId);
 
-        Set<Long> user = userStorage.getUsers().get(id).getFriends();
-        Set<Long> friend = userStorage.getUsers().get(otherId).getFriends();
+        User user = findUserById(id);
+        Set<Long> userSet = user.getFriends();
 
-        List<Long> friendListId =  user.stream()
-                .filter(friend::contains)
-                .collect(Collectors.toList());
+        User friend = findUserById(otherId);
+        Set<Long> friendSet = friend.getFriends();
 
-        List<User> friendsList = new ArrayList<>();
-        for (Long idFriend : friendListId) {
-            friendsList.add(userStorage.findUserById(idFriend));
-        }
-        return friendsList;
+        Set<Long> friendSetId =  userSet.stream()
+                .filter(friendSet::contains)
+                .collect(Collectors.toSet());
+
+        return fillUsersList(friendSetId);
     }
 
     private void checkId(Long id) {
@@ -81,5 +100,14 @@ public class UserService {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new DataNotFoundException(String.format("Пользователь %d не найден", id));
         }
+    }
+
+    private List<User> fillUsersList(Set<Long> friendListId) {
+        List<User> friendsList = new ArrayList<>();
+
+        friendListId.forEach(
+                idFriend -> friendsList.add(userStorage.findUserById(idFriend))
+        );
+        return friendsList;
     }
 }

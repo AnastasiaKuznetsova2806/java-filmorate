@@ -53,9 +53,9 @@ public class InMemoryFilmStorage implements FilmStorage{
         if (id == null) {
             return null;
         }
-        return films.values().stream()
-                .filter(film -> film.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new DataNotFoundException(String.format("Фильм %d не найден", id)));
+        if (!films.containsKey(id)) {
+            throw new DataNotFoundException(String.format("Фильм %d не найден", id));
+        }
+        return films.get(id);
     }
 }

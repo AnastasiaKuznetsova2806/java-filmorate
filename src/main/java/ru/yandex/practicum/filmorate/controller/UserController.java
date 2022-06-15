@@ -23,30 +23,30 @@ public class UserController {
     @PostMapping(value = "/users")
     public User createUser( @Valid @RequestBody User user) {
         log.info("Получен запрос на добавление объекта: '{}'", user);
-        return userService.getUserStorage().createUser(user);
+        return userService.createUser(user);
     }
 
     @PutMapping(value = "/users")
     public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление объекта: '{}'", user);
-        return userService.getUserStorage().updateUser(user);
+        return userService.updateUser(user);
     }
 
     @GetMapping(value = "/users")
     public Collection<User> findAllUsers() {
-        return userService.getUserStorage().findAllUsers();
+        return userService.findAllUsers();
     }
 
     @GetMapping(value = "/users/{id}")
     public User findUserById(@PathVariable Long id) {
-        return userService.getUserStorage().findUserById(id);
+        return userService.findUserById(id);
     }
 
     @PutMapping(value = "users/{id}/friends/{friendId}")
     public void addingToFriends(@PathVariable Long id,
                                 @PathVariable Long friendId) {
         log.info("Получен запрос на добавление объекта в друзья");
-        userService.addingToFriends(id, friendId);
+        userService.addToFriends(id, friendId);
     }
 
     @DeleteMapping(value = "users/{id}/friends/{friendId}")

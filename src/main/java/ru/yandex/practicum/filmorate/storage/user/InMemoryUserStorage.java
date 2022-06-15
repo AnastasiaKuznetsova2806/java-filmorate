@@ -52,9 +52,9 @@ public class InMemoryUserStorage implements UserStorage{
         if (id == null) {
             return null;
         }
-        return users.values().stream()
-                .filter(user -> user.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new DataNotFoundException(String.format("Пользователь %d не найден", id)));
+        if (!users.containsKey(id)) {
+            throw new DataNotFoundException(String.format("Пользователь %d не найден", id));
+        }
+        return users.get(id);
     }
 }

@@ -23,30 +23,30 @@ public class FilmController {
     @PostMapping(value = "/films")
     public Film createFilm(@Valid @RequestBody Film film) {
         log.info("Получен запрос на добавление объекта: '{}'", film);
-        return filmService.getFilmStorage().createFilm(film);
+        return filmService.createFilm(film);
     }
 
     @PutMapping(value = "/films")
     public Film updateFilm(@Valid @RequestBody Film film) {
         log.info("Получен запрос на обновление объекта: '{}'", film);
-        return filmService.getFilmStorage().updateFilm(film);
+        return filmService.updateFilm(film);
     }
 
     @GetMapping(value = "/films")
     public Collection<Film> findAllFilms() {
-        return filmService.getFilmStorage().findAllFilms();
+        return filmService.findAllFilms();
     }
 
     @GetMapping(value = "/films/{id}")
     public Film findFilmById(@PathVariable Long id) {
-        return filmService.getFilmStorage().findFilmById(id);
+        return filmService.findFilmById(id);
     }
 
     @PutMapping(value = "films/{id}/like/{userId}")
-    public void addingLike(@PathVariable Long id,
-                           @PathVariable Long userId) {
+    public void addLike(@PathVariable Long id,
+                        @PathVariable Long userId) {
         log.info("Получен запрос на добавлене лайка");
-        filmService.addingLike(id, userId);
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping(value = "films/{id}/like/{userId}")

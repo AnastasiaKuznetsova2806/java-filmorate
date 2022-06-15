@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import javax.validation.ValidationException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,16 +20,33 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public InMemoryFilmStorage getFilmStorage() {
-        return filmStorage;
+    //Создание фильма
+    public Film createFilm(Film film) {
+        return filmStorage.createFilm(film);
+    }
+
+    //Обновление фильма
+    public Film updateFilm(Film film) {
+        return filmStorage.updateFilm(film);
+    }
+
+    //Получение списка всех фильмов
+    public Collection<Film> findAllFilms() {
+        return filmStorage.findAllFilms();
+    }
+
+    //Получение фильма по уникальному идентификатору
+    public Film findFilmById(Long id) {
+        return filmStorage.findFilmById(id);
     }
 
     //Добавление лайка
-    public void addingLike(Long id, Long userId) {
+    public void addLike(Long id, Long userId) {
         checkId(id);
         checkId(userId);
 
-        filmStorage.getFilms().get(id).getLikes().add(userId);
+        Film film = findFilmById(id);
+        film.getLikes().add(userId);
     }
 
     //Удаление лайка
@@ -36,20 +54,21 @@ public class FilmService {
         checkId(id);
         checkId(userId);
 
-        if (!filmStorage.getFilms().get(id).getLikes().contains(userId)) {
+        Film film = findFilmById(id);
+        if (!film.getLikes().contains(userId)) {
             throw new DataNotFoundException(String.format("Лайк с № %d не найден", userId));
         }
-        filmStorage.getFilms().get(id).getLikes().remove(userId);
+        film.getLikes().remove(userId);
     }
 
-    //вывод наиболее популярных фильмов
+    //Вывод наиболее популярных фильмов
     public List<Film> listOfPopularMovies(int count) {
         if (count <= 0) {
             throw new ValidationException("Поле count должно быть больше 0");
         }
 
         return filmStorage.getFilms().values().stream()
-                .sorted((f0, f1) -> f1.getLikes().size() - f0.getLikes().size())
+                .sorted()
                 .limit(count)
                 .collect(Collectors.toList());
     }

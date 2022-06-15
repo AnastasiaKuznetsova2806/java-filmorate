@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class Film {
+public class Film implements Comparable<Film>{
     private long id;
     @NotNull(message = "Имя не может быть пустым")
     @NotBlank(message = "Имя не может быть пустым")
@@ -29,5 +29,10 @@ public class Film {
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.likes = new HashSet<>();
+    }
+
+    @Override
+    public int compareTo(Film o) {
+        return o.likes.size() - this.likes.size();
     }
 }
