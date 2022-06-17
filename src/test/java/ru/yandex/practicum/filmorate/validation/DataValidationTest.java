@@ -1,30 +1,31 @@
 package ru.yandex.practicum.filmorate.validation;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DataValidationTest {
     private final LocalDate birthday = LocalDate.of(2013, 10, 28);
-    private UserController userController;
-    private FilmController filmController;
+    private InMemoryUserStorage userStorage;
+    private InMemoryFilmStorage filmStorage;
 
     @Test
     public void test1_createUserWithLoginWithSpaces() {
         final ValidationException exception = assertThrows(ValidationException.class, () -> {
             User user = new User("email@mail.ru", "log in", "name", birthday);
-            userController = new UserController();
-            userController.createUser(user);
+            userStorage = new InMemoryUserStorage();
+            userStorage.createUser(user);
         });
         assertEquals(
-                "500 INTERNAL_SERVER_ERROR \"Логин не может содержать пробелы\"",
+                "Логин не может содержать пробелы",
                 exception.getMassage()
         );
     }
@@ -32,10 +33,10 @@ class DataValidationTest {
     @Test
     public void test2_createUserWithEmptyName() {
         User user = new User("email@mail.ru", "login", "", birthday);
-        userController = new UserController();
-        User result = userController.createUser(user);
+        userStorage = new InMemoryUserStorage();
+        User result = userStorage.createUser(user);
         assertEquals(
-                "User(id=1, email=email@mail.ru, login=login, name=login, birthday=2013-10-28)",
+                "User(id=1, email=email@mail.ru, login=login, name=login, birthday=2013-10-28, friends=[])",
                 result.toString()
         );
     }
@@ -45,11 +46,11 @@ class DataValidationTest {
         final LocalDate date = LocalDate.of(1009,1,1);
         final ValidationException exception = assertThrows(ValidationException.class, () -> {
             Film film = new Film("Аватар", "Научно-фантастический фильм", date, 162);
-            filmController = new FilmController();
-            filmController.createFilm(film);
+            filmStorage = new InMemoryFilmStorage();
+            filmStorage.createFilm(film);
         });
         assertEquals(
-                "500 INTERNAL_SERVER_ERROR \"Дата релиза раньше 28 декабря 1895 года\"",
+                "Дата релиза раньше 28 декабря 1895 года",
                 exception.getMassage()
         );
     }

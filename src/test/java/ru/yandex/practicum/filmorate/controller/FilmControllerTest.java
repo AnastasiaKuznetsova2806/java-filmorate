@@ -5,15 +5,15 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
-
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Set;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilmControllerTest {
     private final LocalDate dateRelease = LocalDate.of(2009, 1, 1);
     private Validator validator;
-    private FilmController filmController;
+    private InMemoryFilmStorage filmStorage;
 
     @BeforeEach
     public void setUp() {
@@ -64,7 +64,7 @@ class FilmControllerTest {
         Film result = createFilm();
         assertEquals(
                 "Film(id=1, name=Аватар, description=Научно-фантастический фильм, " +
-                "releaseDate=2009-01-01, duration=162)",
+                        "releaseDate=2009-01-01, duration=162, likes=[])",
                 result.toString()
         );
     }
@@ -84,12 +84,12 @@ class FilmControllerTest {
                 .create();
         Film film = gson.fromJson(json, Film.class);
 
-        final ValidationException exception = assertThrows(ValidationException.class, () -> {
-            filmController = new FilmController();
-            filmController.updateFilm(film);
+        final DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
+            filmStorage = new InMemoryFilmStorage();
+            filmStorage.updateFilm(film);
         });
         assertEquals(
-                "500 INTERNAL_SERVER_ERROR \"Не найдена запись с id = -1\"",
+                "Не найдена запись с id = -1",
                 exception.getMassage()
         );
     }
@@ -110,10 +110,10 @@ class FilmControllerTest {
                 .create();
         Film film = gson.fromJson(json, Film.class);
 
-        Film result = filmController.updateFilm(film);
+        Film result = filmStorage.updateFilm(film);
         assertEquals(
                 "Film(id=1, name=Аватар Updated, description=Научно-фантастический фильм, " +
-                "releaseDate=2009-01-01, duration=162)",
+                        "releaseDate=2009-01-01, duration=162, likes=null)",
                 result.toString()
         );
     }
@@ -121,17 +121,17 @@ class FilmControllerTest {
     @Test
     public void test7_findAllFilms() {
         createFilm();
-        Collection<Film> films = filmController.findAllFilms();
+        Collection<Film> films = filmStorage.findAllFilms();
         assertEquals(
                 "[Film(id=1, name=Аватар, description=Научно-фантастический фильм, " +
-                        "releaseDate=2009-01-01, duration=162)]",
+                        "releaseDate=2009-01-01, duration=162, likes=[])]",
                 films.toString()
         );
     }
 
     private Film createFilm() {
         Film film = new Film("Аватар", "Научно-фантастический фильм", dateRelease, 162);
-        filmController = new FilmController();
-        return filmController.createFilm(film);
+        filmStorage = new InMemoryFilmStorage();
+        return filmStorage.createFilm(film);
     }
 }

@@ -5,8 +5,9 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import javax.validation.ConstraintViolation;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserControllerTest {
     private final LocalDate birthday = LocalDate.of(2013, 10, 28);
     private Validator validator;
-    private UserController userController;
+    private InMemoryUserStorage userStorage;
 
     @BeforeEach
     public void setUp() {
@@ -64,7 +65,8 @@ class UserControllerTest {
     public void test5_createUser() {
         User result = createUser();
         assertEquals(
-                "User(id=1, email=email@mail.ru, login=login, name=name, birthday=2013-10-28)",
+                "User(id=1, email=email@mail.ru, login=login, " +
+                        "name=name, birthday=2013-10-28, friends=[])",
                 result.toString()
         );
     }
@@ -83,12 +85,12 @@ class UserControllerTest {
                 .create();
         User user = gson.fromJson(json, User.class);
 
-        final ValidationException exception = assertThrows(ValidationException.class, () -> {
-            userController = new UserController();
-            userController.updateUser(user);
+        final DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
+            userStorage = new InMemoryUserStorage();
+            userStorage.updateUser(user);
         });
         assertEquals(
-                "500 INTERNAL_SERVER_ERROR \"Не найдена запись с id = -1\"",
+                "Не найдена запись с id = -1",
                 exception.getMassage()
         );
     }
@@ -108,9 +110,10 @@ class UserControllerTest {
                 .create();
         User user = gson.fromJson(json, User.class);
 
-        User result = userController.updateUser(user);
+        User result = userStorage.updateUser(user);
         assertEquals(
-                "User(id=1, email=email@yandex.ru, login=loginUpdate, name=name, birthday=2013-10-28)",
+                "User(id=1, email=email@yandex.ru, login=loginUpdate, " +
+                        "name=name, birthday=2013-10-28, friends=null)",
                 result.toString()
         );
     }
@@ -118,17 +121,18 @@ class UserControllerTest {
     @Test
     public void test8_findAllUsers() {
         createUser();
-        Collection<User> users = userController.findAllUsers();
+        Collection<User> users = userStorage.findAllUsers();
         System.out.println(users);
         assertEquals(
-                "[User(id=1, email=email@mail.ru, login=login, name=name, birthday=2013-10-28)]",
+                "[User(id=1, email=email@mail.ru, login=login, " +
+                        "name=name, birthday=2013-10-28, friends=[])]",
                 users.toString()
         );
     }
 
     private User createUser() {
         User user = new User("email@mail.ru", "login", "name", birthday);
-        userController = new UserController();
-        return userController.createUser(user);
+        userStorage = new InMemoryUserStorage();
+        return userStorage.createUser(user);
     }
 }

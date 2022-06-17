@@ -1,8 +1,7 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class ValidationException extends RuntimeException {
-
-    public ValidationException(String massage) {
+public class DataNotFoundException extends RuntimeException{
+    public DataNotFoundException(String massage) {
         super(massage);
     }
 
