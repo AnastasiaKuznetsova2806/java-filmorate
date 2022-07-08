@@ -1,24 +1,21 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final InMemoryUserStorage userStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage userStorage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -46,32 +43,21 @@ public class UserService {
     public void addToFriends(Long id, Long friendId) {
         checkId(id);
         checkId(friendId);
-
-        User user = findUserById(id);
-        user.getFriends().add(friendId);
-
-        User friend = findUserById(friendId);
-        friend.getFriends().add(id);
+        userStorage.addToFriends(id, friendId);
     }
 
     //Удаление из друзей
     public void unfriending(Long id, Long friendId) {
         checkId(id);
         checkId(friendId);
-
-        User user = findUserById(id);
-        user.getFriends().remove(friendId);
-
-        User friend = findUserById(friendId);
-        friend.getFriends().remove(id);
+        userStorage.unfriending(id, friendId);
     }
 
     //Список пользователей, являющихся друзьями.
     public List<User> findFriendList(Long id) {
         checkId(id);
 
-        User user = findUserById(id);
-        Set<Long> friendListId = user.getFriends();
+        Set<Long> friendListId = new HashSet<>(userStorage.findFriendList(id));
         return fillUsersList(friendListId);
     }
 
@@ -80,11 +66,8 @@ public class UserService {
         checkId(id);
         checkId(otherId);
 
-        User user = findUserById(id);
-        Set<Long> userSet = user.getFriends();
-
-        User friend = findUserById(otherId);
-        Set<Long> friendSet = friend.getFriends();
+        Set<Long> userSet = new HashSet<>(userStorage.findFriendList(id));
+        Set<Long> friendSet = new HashSet<>(userStorage.findFriendList(otherId));
 
         Set<Long> friendSetId =  userSet.stream()
                 .filter(friendSet::contains)
@@ -97,9 +80,7 @@ public class UserService {
         if (id == null) {
             throw new ValidationException("Поле пустое!");
         }
-        if (!userStorage.getUsers().containsKey(id)) {
-            throw new DataNotFoundException(String.format("Пользователь %d не найден", id));
-        }
+        findUserById(id);
     }
 
     private List<User> fillUsersList(Set<Long> friendListId) {
