@@ -41,8 +41,6 @@ public class LikeDbStorage {
 
     //Проверка лайка
     private void checkLike(Long id, Long userId) {
-        checkUser(userId);
-
         String sql = "select USER_ID from LIKES where FILM_ID = ? and USER_ID = ?;";
 
         List<Integer> like = jdbcTemplate.queryForList(sql, Integer.class, id, userId);

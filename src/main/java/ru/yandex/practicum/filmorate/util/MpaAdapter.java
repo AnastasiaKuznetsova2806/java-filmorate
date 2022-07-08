@@ -32,14 +32,14 @@ public class MpaAdapter extends JsonDeserializer<Film> {
         String description = node.get("description").textValue();
         Integer duration = node.get("duration").asInt();
 
-        JsonNode mpaJson = node.get("mpa");
-        int mpaId = 0;
-        if (mpaJson != null && mpaJson.toString().contains("id")) {
-            mpaId = mpaJson.get("id").asInt();
-        }
-
-        Film film = new Film(name, description, releaseDate, duration, new Mpa(mpaId));
+        Film film = new Film(name, description, releaseDate, duration);
         film.setId(id);
+
+        JsonNode mpaJson = node.get("mpa");
+        if (mpaJson != null && mpaJson.toString().contains("id")) {
+            int mpaId = mpaJson.get("id").asInt();
+            film.setMpa(new Mpa(mpaId));
+        }
 
         JsonNode genresJson = node.get("genres");
         Set<Genre> genres = new TreeSet<>(Comparator.comparing(Genre::getId));
