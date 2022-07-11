@@ -26,16 +26,20 @@ import java.util.Objects;
 @Component
 @Qualifier("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
-    private final DataValidation dataValidation = new DataValidation();
     private final JdbcTemplate jdbcTemplate;
     private final LikeDbStorage likeStorage;
     private final GenreDbStorage genreStorage;
+    private final DataValidation dataValidation;
 
     @Autowired
-    public FilmDbStorage(JdbcTemplate jdbcTemplate, LikeDbStorage likeStorage, GenreDbStorage genreStorage) {
+    public FilmDbStorage(JdbcTemplate jdbcTemplate,
+                         LikeDbStorage likeStorage,
+                         GenreDbStorage genreStorage,
+                         DataValidation dataValidation) {
         this.jdbcTemplate = jdbcTemplate;
         this.likeStorage = likeStorage;
         this.genreStorage = genreStorage;
+        this.dataValidation = dataValidation;
     }
 
     @Override
@@ -105,6 +109,18 @@ public class FilmDbStorage implements FilmStorage {
         return film;
     }
 
+    //Добавление лайка
+    @Override
+    public void addLike(Long id, Long userId) {
+        likeStorage.addLike(id, userId);
+    }
+
+    //Удаление лайка
+    @Override
+    public void deletingLike(Long id, Long userId) {
+        likeStorage.deletingLike(id, userId);
+    }
+
     private Film makeFilm(ResultSet rs) throws SQLException {
         long id = rs.getLong("FILM_ID");
         String name = rs.getString("FILM_NAME");
@@ -129,17 +145,5 @@ public class FilmDbStorage implements FilmStorage {
             film.getLikes().addAll(likes);
         }
         return film;
-    }
-
-    //Добавление лайка
-    @Override
-    public void addLike(Long id, Long userId) {
-        likeStorage.addLike(id, userId);
-    }
-
-    //Удаление лайка
-    @Override
-    public void deletingLike(Long id, Long userId) {
-        likeStorage.deletingLike(id, userId);
     }
 }

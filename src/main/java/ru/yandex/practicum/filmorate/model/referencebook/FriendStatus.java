@@ -6,8 +6,4 @@ import lombok.Data;
 public class FriendStatus {
     private final int statusId;
     private String statusName;
-
-    public FriendStatus (int statusId) {
-        this.statusId = statusId;
-    }
 }

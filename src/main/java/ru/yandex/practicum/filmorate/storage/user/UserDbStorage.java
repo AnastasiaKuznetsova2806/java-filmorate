@@ -25,12 +25,15 @@ import java.util.Objects;
 public class UserDbStorage implements UserStorage{
     private final JdbcTemplate jdbcTemplate;
     private  final FriendDbStorage friendStorage;
-    private final DataValidation dataValidation = new DataValidation();
+    private final DataValidation dataValidation;
 
     @Autowired
-    public UserDbStorage(JdbcTemplate jdbcTemplate, FriendDbStorage friendStorage) {
+    public UserDbStorage(JdbcTemplate jdbcTemplate,
+                         FriendDbStorage friendStorage,
+                         DataValidation dataValidation) {
         this.jdbcTemplate = jdbcTemplate;
         this.friendStorage = friendStorage;
+        this.dataValidation = dataValidation;
     }
 
     @Override
@@ -87,17 +90,6 @@ public class UserDbStorage implements UserStorage{
         return user;
     }
 
-    private User makeUser(ResultSet rs) throws SQLException {
-        int id = rs.getInt("USER_ID");
-        String email = rs.getString("EMAIL");
-        String login = rs.getString("LOGIN");
-        String name = rs.getString("USER_NAME");
-        LocalDate birthday = rs.getDate("BIRTHDAY").toLocalDate();
-        User user = new User(email, login, name, birthday);
-        user.setId(id);
-        return user;
-    }
-
     //Добавление в друзья
     public void addToFriends(Long id, Long friendId) {
         findUserById(id);
@@ -115,5 +107,16 @@ public class UserDbStorage implements UserStorage{
     //Список пользователей, являющихся друзьями.
     public List<Long> findFriendList(Long id) {
         return friendStorage.findFriendList(id);
+    }
+
+    private User makeUser(ResultSet rs) throws SQLException {
+        int id = rs.getInt("USER_ID");
+        String email = rs.getString("EMAIL");
+        String login = rs.getString("LOGIN");
+        String name = rs.getString("USER_NAME");
+        LocalDate birthday = rs.getDate("BIRTHDAY").toLocalDate();
+        User user = new User(email, login, name, birthday);
+        user.setId(id);
+        return user;
     }
 }

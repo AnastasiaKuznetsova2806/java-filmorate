@@ -44,6 +44,17 @@ public class FriendDbStorage {
         return jdbcTemplate.queryForList(sql, Long.class, id);
     }
 
+    private FriendStatus makeFriendStatus(ResultSet rs) throws SQLException {
+        int status_id = rs.getInt("STATUS");
+        return new FriendStatus(status_id);
+    }
+
+    //Обновление статуса дружбы
+    private void updateFriendStatus(Long id, Long friendId, Integer status) {
+        String sql = "update FRIENDS set STATUS_ID = ? where USER_ID = ? and FRIEND_ID = ?;";
+        jdbcTemplate.update(sql, status, id, friendId);
+    }
+
     //Проверка статуса дружбы
     private void checkStatus (Long id, Long friendId) {
         String sql = "select " +
@@ -60,16 +71,5 @@ public class FriendDbStorage {
         if (status != null) {
             updateFriendStatus(id, friendId, status.getStatusId());
         }
-    }
-
-    private FriendStatus makeFriendStatus(ResultSet rs) throws SQLException {
-        int status_id = rs.getInt("STATUS");
-        return new FriendStatus(status_id);
-    }
-
-    //Обновление статуса дружбы
-    private void updateFriendStatus(Long id, Long friendId, Integer status) {
-        String sql = "update FRIENDS set STATUS_ID = ? where USER_ID = ? and FRIEND_ID = ?;";
-        jdbcTemplate.update(sql, status, id, friendId);
     }
 }

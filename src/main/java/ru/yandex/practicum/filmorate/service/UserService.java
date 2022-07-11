@@ -7,7 +7,10 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import javax.validation.ValidationException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,11 +87,8 @@ public class UserService {
     }
 
     private List<User> fillUsersList(Set<Long> friendListId) {
-        List<User> friendsList = new ArrayList<>();
-
-        friendListId.forEach(
-                idFriend -> friendsList.add(userStorage.findUserById(idFriend))
-        );
-        return friendsList;
+        return friendListId.stream()
+                .map(this::findUserById)
+                .collect(Collectors.toList());
     }
 }

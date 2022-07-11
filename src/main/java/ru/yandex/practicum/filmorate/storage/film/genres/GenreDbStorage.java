@@ -45,12 +45,6 @@ public class GenreDbStorage implements GenreStorage{
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs), id);
     }
 
-    private Genre makeGenre(ResultSet rs) throws SQLException {
-        int id = rs.getInt("GENRE_ID");
-        String name = rs.getString("GENRE_NAME");
-        return new Genre(id, name);
-    }
-
     @Override
     public Collection<Genre> findAllGenres() {
         String sql = "select * from GENRES order by GENRE_ID;";
@@ -66,6 +60,12 @@ public class GenreDbStorage implements GenreStorage{
             throw new DataNotFoundException(String.format("Жанр %d не найден", id));
         }
         return genre;
+    }
+
+    private Genre makeGenre(ResultSet rs) throws SQLException {
+        int id = rs.getInt("GENRE_ID");
+        String name = rs.getString("GENRE_NAME");
+        return new Genre(id, name);
     }
 
     private void checkingForDuplicateGenres(long film_id) {
