@@ -1,6 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.referencebook.Genre;
+import ru.yandex.practicum.filmorate.model.referencebook.Mpa;
+import ru.yandex.practicum.filmorate.util.MpaAdapter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@JsonDeserialize(using = MpaAdapter.class)
 public class Film implements Comparable<Film>{
     private long id;
     @NotNull(message = "Имя не может быть пустым")
@@ -22,13 +27,27 @@ public class Film implements Comparable<Film>{
     @Min(value = 0, message = "Продолжительность фильма должна быть положительной")
     private final int duration;
     private Set<Long> likes;
+    @NotNull(message = "Рейтинг не может быть пустым")
+    private Mpa mpa;
+    private Set<Genre> genres;
 
-    public Film(String name, String description, LocalDate releaseDate, int duration) {
+    public Film(String name, String description, LocalDate releaseDate, Integer duration) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.likes = new HashSet<>();
+        this.genres = new HashSet<>();
+    }
+
+    public Film(String name, String description, LocalDate releaseDate, Integer duration, Mpa mpa) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.likes = new HashSet<>();
+        this.mpa = mpa;
+        this.genres = new HashSet<>();
     }
 
     @Override

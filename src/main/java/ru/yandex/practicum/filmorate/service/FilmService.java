@@ -1,10 +1,10 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import javax.validation.ValidationException;
 import java.util.Collection;
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-    private final InMemoryFilmStorage filmStorage;
+    private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmService(InMemoryFilmStorage filmStorage) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
 
@@ -43,22 +43,13 @@ public class FilmService {
     //Добавление лайка
     public void addLike(Long id, Long userId) {
         checkId(id);
-        checkId(userId);
-
-        Film film = findFilmById(id);
-        film.getLikes().add(userId);
+        filmStorage.addLike(id, userId);
     }
 
     //Удаление лайка
     public void deletingLike(Long id, Long userId) {
         checkId(id);
-        checkId(userId);
-
-        Film film = findFilmById(id);
-        if (!film.getLikes().contains(userId)) {
-            throw new DataNotFoundException(String.format("Лайк с № %d не найден", userId));
-        }
-        film.getLikes().remove(userId);
+        filmStorage.deletingLike(id, userId);
     }
 
     //Вывод наиболее популярных фильмов
@@ -67,7 +58,7 @@ public class FilmService {
             throw new ValidationException("Поле count должно быть больше 0");
         }
 
-        return filmStorage.getFilms().values().stream()
+        return filmStorage.findAllFilms().stream()
                 .sorted()
                 .limit(count)
                 .collect(Collectors.toList());
@@ -77,8 +68,6 @@ public class FilmService {
         if (id == null) {
             throw new ValidationException("Поле id пустое!");
         }
-        if (!filmStorage.getFilms().containsKey(id)) {
-            throw new DataNotFoundException(String.format("Фильм %d не найден", id));
-        }
+        findFilmById(id);
     }
 }

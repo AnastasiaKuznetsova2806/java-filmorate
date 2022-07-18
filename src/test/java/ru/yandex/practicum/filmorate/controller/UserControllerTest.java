@@ -2,12 +2,15 @@ package ru.yandex.practicum.filmorate.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import javax.validation.ConstraintViolation;
@@ -21,10 +24,12 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserControllerTest {
     private final LocalDate birthday = LocalDate.of(2013, 10, 28);
     private Validator validator;
-    private InMemoryUserStorage userStorage;
+    private UserStorage userStorage;
 
     @BeforeEach
     public void setUp() {
@@ -86,7 +91,7 @@ class UserControllerTest {
         User user = gson.fromJson(json, User.class);
 
         final DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
-            userStorage = new InMemoryUserStorage();
+        //    userStorage = new InMemoryUserStorage();
             userStorage.updateUser(user);
         });
         assertEquals(
@@ -132,7 +137,7 @@ class UserControllerTest {
 
     private User createUser() {
         User user = new User("email@mail.ru", "login", "name", birthday);
-        userStorage = new InMemoryUserStorage();
+    //    userStorage = new InMemoryUserStorage();
         return userStorage.createUser(user);
     }
 }

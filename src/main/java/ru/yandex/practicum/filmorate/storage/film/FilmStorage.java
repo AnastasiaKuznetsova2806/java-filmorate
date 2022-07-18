@@ -16,4 +16,10 @@ public interface FilmStorage {
 
     //Получить фильм по уникальному идентификатору
     Film findFilmById(Long id);
+
+    //Добавление лайка
+    void addLike(Long id, Long userId);
+
+    //Удаление лайка
+    void deletingLike(Long id, Long userId);
 }
