@@ -26,4 +26,7 @@ public interface UserStorage {
 
     //Список пользователей, являющихся друзьями.
     List<Long> findFriendList(Long id);
+
+    //Удаление пользователя
+    void deleteUserById(Long userId);
 }

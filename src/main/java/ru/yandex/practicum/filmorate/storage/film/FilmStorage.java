@@ -22,4 +22,7 @@ public interface FilmStorage {
 
     //Удаление лайка
     void deletingLike(Long id, Long userId);
+
+    //Удаление фильма
+    void deleteFilmById(Long filmId);
 }

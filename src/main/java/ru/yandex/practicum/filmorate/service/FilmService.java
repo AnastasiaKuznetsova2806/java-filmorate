@@ -64,6 +64,11 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
+    //Удаление фильма
+    public void deleteFilmById(Long filmId) {
+        filmStorage.deleteFilmById(filmId);
+    }
+
     private void checkId(Long id) {
         if (id == null) {
             throw new ValidationException("Поле id пустое!");
