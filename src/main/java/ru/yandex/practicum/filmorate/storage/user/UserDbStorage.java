@@ -109,6 +109,13 @@ public class UserDbStorage implements UserStorage{
         return friendStorage.findFriendList(id);
     }
 
+    //Удаление пользователя
+    @Override
+    public void deleteUserById(Long userId) {
+        String sql = "delete from USERS where USER_ID = ?;";
+        jdbcTemplate.update(sql, userId);
+    }
+
     private User makeUser(ResultSet rs) throws SQLException {
         int id = rs.getInt("USER_ID");
         String email = rs.getString("EMAIL");

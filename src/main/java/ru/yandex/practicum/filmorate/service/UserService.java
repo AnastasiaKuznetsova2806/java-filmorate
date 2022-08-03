@@ -91,4 +91,9 @@ public class UserService {
                 .map(this::findUserById)
                 .collect(Collectors.toList());
     }
+
+    //Удаление пользователя
+    public void deleteUserById(Long userId) {
+        userStorage.deleteUserById(userId);
+    }
 }

@@ -71,8 +71,8 @@ public class FilmDbStorage implements FilmStorage {
         findFilmById(film.getId());
 
         String sql = "update FILMS " +
-                "set FILM_NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?" +
-                "where FILM_ID = ?";
+                "set FILM_NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ? " +
+                "where FILM_ID = ? ";
 
         jdbcTemplate.update(sql,
                 film.getName(),
@@ -88,18 +88,18 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> findAllFilms() {
-        String sql = "select *\n" +
-                "from FILMS F\n" +
-                "left join MPA M on F.MPA_ID = M.MPA_ID;";
+        String sql = "select * " +
+                "from FILMS F " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID; ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
     }
 
     @Override
     public Film findFilmById(Long id) {
-        String sql = "select *\n" +
-                "from FILMS F\n" +
-                "left join MPA M on F.MPA_ID = M.MPA_ID\n" +
-                "where F.FILM_ID = ?;";
+        String sql = "select * " +
+                "from FILMS F " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where F.FILM_ID = ?; ";
 
         Film film = jdbcTemplate.query(sql, rs -> rs.next() ? makeFilm(rs) : null, id);
 
@@ -119,6 +119,14 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public void deletingLike(Long id, Long userId) {
         likeStorage.deletingLike(id, userId);
+    }
+
+    //Удаление фильма
+    @Override
+    public void deleteFilmById(Long filmId) {
+        String sql = "delete from FILMS where FILM_ID = ?";
+
+        jdbcTemplate.update(sql, filmId);
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
