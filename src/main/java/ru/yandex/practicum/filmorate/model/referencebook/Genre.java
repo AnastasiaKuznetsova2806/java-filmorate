@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Genre {
     private final int id;
     private String name;

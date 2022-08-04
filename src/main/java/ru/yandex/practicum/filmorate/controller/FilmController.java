@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
-@RestController
 @Slf4j
+@RestController
 public class FilmController {
     private final FilmService filmService;
 
@@ -42,28 +43,34 @@ public class FilmController {
         return filmService.findFilmById(id);
     }
 
-    @PutMapping(value = "films/{id}/like/{userId}")
+    @PutMapping(value = "/films/{id}/like/{userId}")
     public void addLike(@PathVariable Long id,
                         @PathVariable Long userId) {
         log.info("Получен запрос на добавлене лайка");
         filmService.addLike(id, userId);
     }
 
-    @DeleteMapping(value = "films/{id}/like/{userId}")
+    @DeleteMapping(value = "/films/{id}/like/{userId}")
     public void deletingLike(@PathVariable Long id,
                              @PathVariable Long userId) {
         log.info("Получен запрос на удаление лайка");
         filmService.deletingLike(id, userId);
     }
 
-    @GetMapping(value = "films/popular")
+    @GetMapping(value = "/films/popular")
     public List<Film> listOfPopularMovies(@RequestParam(defaultValue = "10", required = false) int count) {
         return filmService.listOfPopularMovies(count);
     }
 
-    @DeleteMapping(value = "films/{filmId}")
+    @DeleteMapping(value = "/films/{filmId}")
     public void deleteFilmById(@PathVariable Long filmId) {
         log.info("Получен запрос на удаление фильма '{}'", filmId);
         filmService.deleteFilmById(filmId);
+    }
+
+    @GetMapping(value = "/films/director/{directorId}")
+    public List<Film> findDirectorFilms(@PathVariable long directorId,
+                                        @RequestParam("sortBy") SortingType sorting) {
+        return filmService.findDirectorFilms(directorId, sorting);
     }
 }

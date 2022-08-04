@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
 import javax.validation.ValidationException;
 import java.util.Collection;
@@ -74,5 +75,10 @@ public class FilmService {
             throw new ValidationException("Поле id пустое!");
         }
         findFilmById(id);
+    }
+
+    //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
+    public List<Film> findDirectorFilms(long directorId, SortingType sorting) {
+        return filmStorage.findDirectorFilms(directorId, sorting);
     }
 }

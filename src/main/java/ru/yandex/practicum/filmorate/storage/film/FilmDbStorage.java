@@ -8,10 +8,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.referencebook.Director;
 import ru.yandex.practicum.filmorate.model.referencebook.Genre;
 import ru.yandex.practicum.filmorate.model.referencebook.Mpa;
-import ru.yandex.practicum.filmorate.storage.film.genres.GenreDbStorage;
+import ru.yandex.practicum.filmorate.storage.film.director.DirectorStorage;
+import ru.yandex.practicum.filmorate.storage.film.genres.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.film.like.LikeDbStorage;
+import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 import ru.yandex.practicum.filmorate.validation.DataValidation;
 
 import java.sql.Date;
@@ -22,23 +25,27 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final LikeDbStorage likeStorage;
-    private final GenreDbStorage genreStorage;
+    private final GenreStorage genreStorage;
+    private final DirectorStorage directorStorage;
     private final DataValidation dataValidation;
 
     @Autowired
     public FilmDbStorage(JdbcTemplate jdbcTemplate,
                          LikeDbStorage likeStorage,
-                         GenreDbStorage genreStorage,
+                         GenreStorage genreStorage,
+                         DirectorStorage directorStorage,
                          DataValidation dataValidation) {
         this.jdbcTemplate = jdbcTemplate;
         this.likeStorage = likeStorage;
         this.genreStorage = genreStorage;
+        this.directorStorage = directorStorage;
         this.dataValidation = dataValidation;
     }
 
@@ -62,6 +69,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setId(Objects.requireNonNull(id.getKey()).longValue());
 
         genreStorage.addGenre(film.getId(), film.getGenres());
+        directorStorage.addDirector(film.getId(), film.getDirectors());
         return film;
     }
 
@@ -83,6 +91,12 @@ public class FilmDbStorage implements FilmStorage {
                 film.getId());
 
         genreStorage.addGenre(film.getId(), film.getGenres());
+
+        if (film.getDirectors().isEmpty()) {
+            film.setDirectors(null);
+        }
+
+        directorStorage.addDirector(film.getId(), film.getDirectors());
         return film;
     }
 
@@ -90,7 +104,7 @@ public class FilmDbStorage implements FilmStorage {
     public Collection<Film> findAllFilms() {
         String sql = "select * " +
                 "from FILMS F " +
-                "left join MPA M on F.MPA_ID = M.MPA_ID; ";
+                "left join MPA M on F.MPA_ID = M.MPA_ID ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
     }
 
@@ -124,9 +138,35 @@ public class FilmDbStorage implements FilmStorage {
     //Удаление фильма
     @Override
     public void deleteFilmById(Long filmId) {
+        findFilmById(filmId);
+
         String sql = "delete from FILMS where FILM_ID = ?";
 
         jdbcTemplate.update(sql, filmId);
+    }
+
+    //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
+    @Override
+    public List<Film> findDirectorFilms(long directorId, SortingType sorting) {
+        directorStorage.findDirectorById(directorId);
+
+        String sql = "select * " +
+                "from FILM_DIRECTORS FD " +
+                "join DIRECTORS D on D.DIRECTOR_ID = FD.DIRECTOR_ID " +
+                "join FILMS F on FD.FILM_ID = F.FILM_ID " +
+                "join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where FD.DIRECTOR_ID = ?; ";
+
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), directorId);
+
+        if (SortingType.LIKES.equals(sorting)) {
+            return films.stream()
+                    .sorted()
+                    .collect(Collectors.toList());
+        }
+        return films.stream()
+                .sorted(this::compare)
+                .collect(Collectors.toList());
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
@@ -152,6 +192,15 @@ public class FilmDbStorage implements FilmStorage {
         if (likes != null) {
             film.getLikes().addAll(likes);
         }
+
+        List<Director> directors = directorStorage.findMovieDirector(film.getId());
+        if (directors != null) {
+            film.getDirectors().addAll(directors);
+        }
         return film;
+    }
+
+    private int compare(Film f0, Film f1) {
+        return (f0.getReleaseDate().compareTo(f1.getReleaseDate()));
     }
 }

@@ -85,3 +85,23 @@ create table IF NOT EXISTS  FILM_GENRES
     constraint FILM_GENRE_GENRE_GENRE_ID_FK
         foreign key (GENRE_ID) references GENRES ON DELETE CASCADE
 );
+
+create table IF NOT EXISTS DIRECTORS
+(
+    DIRECTOR_ID   INTEGER auto_increment,
+    DIRECTOR_NAME CHARACTER VARYING(250) not null,
+    constraint DIRECTORS_PK
+        primary key (DIRECTOR_ID)
+);
+
+create table IF NOT EXISTS FILM_DIRECTORS
+(
+    FILM_ID   INTEGER not null,
+    DIRECTOR_ID INTEGER not null,
+    constraint FILM_DIRECTORS_FILMS_FILM_ID_FK
+        foreign key (FILM_ID) references FILMS ON DELETE CASCADE,
+    constraint FILM_DIRECTORS_DIRECTORS_DIRECTOR_ID_FK
+        foreign key (DIRECTOR_ID) references DIRECTORS ON DELETE CASCADE,
+    constraint FILM_DIRECTORS_PK
+        primary key (FILM_ID, DIRECTOR_ID)
+);

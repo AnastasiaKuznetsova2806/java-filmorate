@@ -25,35 +25,38 @@ public class GenreDbStorage implements GenreStorage{
     public void addGenre(long film_id, Set<Genre> genres) {
         checkingForDuplicateGenres(film_id);
 
+        String sql = "insert into FILM_GENRES(film_id, genre_id) VALUES (?, ?); ";
+
         if (genres.size() > 0) {
             for (Genre genre : genres) {
-                String sql = "insert into FILM_GENRES(film_id, genre_id) VALUES (?, ?);";
+                int idGenre = genre.getId();
+                findGenreById(idGenre);
 
-                jdbcTemplate.update(sql, film_id, genre.getId());
+                jdbcTemplate.update(sql, film_id, idGenre);
             }
         }
     }
 
     public List<Genre> findMovieGenre(long id) {
-        String sql = "select G.GENRE_ID,\n" +
-                "       G.GENRE_NAME\n" +
-                "from FILM_GENRES FG \n" +
-                "join GENRES G on G.GENRE_ID = FG.GENRE_ID\n" +
-                "where FG.FILM_ID = ?" +
-                "order by G.GENRE_ID;";
+        String sql = "select G.GENRE_ID, " +
+                "       G.GENRE_NAME " +
+                "from FILM_GENRES FG " +
+                "join GENRES G on G.GENRE_ID = FG.GENRE_ID " +
+                "where FG.FILM_ID = ? " +
+                "order by G.GENRE_ID; ";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs), id);
     }
 
     @Override
     public Collection<Genre> findAllGenres() {
-        String sql = "select * from GENRES order by GENRE_ID;";
+        String sql = "select * from GENRES order by GENRE_ID; ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs));
     }
 
     @Override
     public Genre findGenreById(Integer id) {
-        String sql = "select * from GENRES where GENRE_ID = ? order by GENRE_ID;";
+        String sql = "select * from GENRES where GENRE_ID = ? order by GENRE_ID; ";
         Genre genre = jdbcTemplate.query(sql, rs -> rs.next() ? makeGenre(rs) : null, id);
 
         if (genre == null) {

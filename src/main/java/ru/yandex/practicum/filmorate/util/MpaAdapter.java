@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.referencebook.Director;
 import ru.yandex.practicum.filmorate.model.referencebook.Genre;
 import ru.yandex.practicum.filmorate.model.referencebook.Mpa;
 
@@ -49,6 +50,16 @@ public class MpaAdapter extends JsonDeserializer<Film> {
                 genres.add(new Genre(genreId));
             }
             film.setGenres(genres);
+        }
+
+        JsonNode directorJson = node.get("directors");
+        Set<Director> directors = new TreeSet<>(Comparator.comparing(Director::getId));
+        if (directorJson != null) {
+            for (int i = 0; i < directorJson.size(); i++) {
+                long directorId = directorJson.get(i).get("id").asLong();
+                directors.add(new Director(directorId));
+            }
+            film.setDirectors(directors);
         }
         return film;
     }

@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.Digits;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Mpa {
     @Digits(integer = 1, fraction = 5)
     private final int id;

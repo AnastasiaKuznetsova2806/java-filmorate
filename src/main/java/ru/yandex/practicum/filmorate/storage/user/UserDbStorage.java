@@ -40,7 +40,7 @@ public class UserDbStorage implements UserStorage{
     public User createUser(User user) {
         dataValidation.userdataVerification(user);
 
-        String sql = "insert into USERS (EMAIL, LOGIN, USER_NAME, BIRTHDAY) values (?, ?, ?, ?);";
+        String sql = "insert into USERS (EMAIL, LOGIN, USER_NAME, BIRTHDAY) values (?, ?, ?, ?); ";
 
         KeyHolder id = new GeneratedKeyHolder();
 
@@ -61,7 +61,7 @@ public class UserDbStorage implements UserStorage{
         dataValidation.userdataVerification(user);
         findUserById(user.getId());
 
-        String sql = "update USERS set EMAIL = ?, LOGIN = ?, USER_NAME = ?, BIRTHDAY = ? where USER_ID = ?;";
+        String sql = "update USERS set EMAIL = ?, LOGIN = ?, USER_NAME = ?, BIRTHDAY = ? where USER_ID = ?; ";
 
         jdbcTemplate.update(sql,
                 user.getEmail(),
@@ -80,7 +80,7 @@ public class UserDbStorage implements UserStorage{
 
     @Override
     public User findUserById(Long id) {
-        String sql = "select * from USERS where USER_ID = ?;";
+        String sql = "select * from USERS where USER_ID = ?; ";
 
         User user = jdbcTemplate.query(sql, rs -> rs.next() ? makeUser(rs) : null, id);
 
@@ -112,7 +112,9 @@ public class UserDbStorage implements UserStorage{
     //Удаление пользователя
     @Override
     public void deleteUserById(Long userId) {
-        String sql = "delete from USERS where USER_ID = ?;";
+        findUserById(userId);
+
+        String sql = "delete from USERS where USER_ID = ?; ";
         jdbcTemplate.update(sql, userId);
     }
 

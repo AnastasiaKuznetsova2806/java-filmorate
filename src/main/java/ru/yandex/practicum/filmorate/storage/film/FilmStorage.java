@@ -1,8 +1,10 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface FilmStorage {
     //Создать фильм
@@ -25,4 +27,7 @@ public interface FilmStorage {
 
     //Удаление фильма
     void deleteFilmById(Long filmId);
+
+    //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
+    List<Film> findDirectorFilms(long directorId, SortingType sorting);
 }

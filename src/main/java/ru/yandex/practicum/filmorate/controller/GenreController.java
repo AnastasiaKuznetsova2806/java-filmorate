@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.Collection;
 
-@RestController
 @Slf4j
+@RestController
 public class GenreController {
     private final GenreService genreService;
 
