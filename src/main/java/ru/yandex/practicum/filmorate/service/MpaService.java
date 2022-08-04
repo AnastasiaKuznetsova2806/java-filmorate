@@ -22,7 +22,7 @@ public class MpaService {
     }
 
     //Получение рейтинга по уникальному идентификатору
-    public Mpa findMpaById(Integer id) {
+    public Mpa findMpaById(int id) {
         return mpaStorage.findMpaById(id);
     }
 }

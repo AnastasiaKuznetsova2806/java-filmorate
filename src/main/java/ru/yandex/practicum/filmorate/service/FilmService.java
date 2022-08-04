@@ -37,18 +37,18 @@ public class FilmService {
     }
 
     //Получение фильма по уникальному идентификатору
-    public Film findFilmById(Long id) {
+    public Film findFilmById(long id) {
         return filmStorage.findFilmById(id);
     }
 
     //Добавление лайка
-    public void addLike(Long id, Long userId) {
+    public void addLike(long id, long userId) {
         checkId(id);
         filmStorage.addLike(id, userId);
     }
 
     //Удаление лайка
-    public void deletingLike(Long id, Long userId) {
+    public void deletingLike(long id, long userId) {
         checkId(id);
         filmStorage.deletingLike(id, userId);
     }
@@ -66,8 +66,13 @@ public class FilmService {
     }
 
     //Удаление фильма
-    public void deleteFilmById(Long filmId) {
+    public void deleteFilmById(long filmId) {
         filmStorage.deleteFilmById(filmId);
+    }
+
+    //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
+    public List<Film> findDirectorFilms(long directorId, SortingType sorting) {
+        return filmStorage.findDirectorFilms(directorId, sorting);
     }
 
     private void checkId(Long id) {
@@ -75,10 +80,5 @@ public class FilmService {
             throw new ValidationException("Поле id пустое!");
         }
         findFilmById(id);
-    }
-
-    //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
-    public List<Film> findDirectorFilms(long directorId, SortingType sorting) {
-        return filmStorage.findDirectorFilms(directorId, sorting);
     }
 }

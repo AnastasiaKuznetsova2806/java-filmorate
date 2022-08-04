@@ -12,7 +12,7 @@ public class DirectorService {
     private final DirectorStorage directorStorage;
 
     @Autowired
-    public DirectorService(final DirectorStorage directorStorage) {
+    public DirectorService(DirectorStorage directorStorage) {
         this.directorStorage = directorStorage;
     }
 

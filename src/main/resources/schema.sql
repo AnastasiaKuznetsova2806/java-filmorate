@@ -9,7 +9,7 @@ create table IF NOT EXISTS USERS
         primary key (USER_ID)
 );
 
-create table IF NOT EXISTS  FRIEND_STATUSES
+create table IF NOT EXISTS FRIEND_STATUSES
 (
     STATUS_ID INTEGER auto_increment,
     STATUS_NAME      CHARACTER VARYING(250),
@@ -30,7 +30,7 @@ create table if not exists FRIENDS
         foreign key (FRIEND_ID) references USERS ON DELETE CASCADE
 );
 
-create table IF NOT EXISTS  MPA
+create table IF NOT EXISTS MPA
 (
     MPA_ID   INTEGER auto_increment,
     MPA_NAME CHARACTER VARYING(250) not null,
@@ -38,10 +38,10 @@ create table IF NOT EXISTS  MPA
         primary key (MPA_ID)
 );
 
-create unique index IF NOT EXISTS  MPA_MPA_NAME_UINDEX
+create unique index IF NOT EXISTS MPA_MPA_NAME_UINDEX
     on MPA (MPA_NAME);
 
-create table IF NOT EXISTS  FILMS
+create table IF NOT EXISTS FILMS
 (
     FILM_ID      INTEGER auto_increment,
     FILM_NAME         CHARACTER VARYING(200) not null,
@@ -55,7 +55,7 @@ create table IF NOT EXISTS  FILMS
         foreign key (MPA_ID) references MPA ON DELETE CASCADE
 );
 
-create table IF NOT EXISTS  LIKES
+create table IF NOT EXISTS LIKES
 (
     FILM_ID INTEGER not null,
     USER_ID INTEGER not null,
@@ -65,7 +65,7 @@ create table IF NOT EXISTS  LIKES
         foreign key (USER_ID) references USERS ON DELETE CASCADE
 );
 
-create table IF NOT EXISTS  GENRES
+create table IF NOT EXISTS GENRES
 (
     GENRE_ID INTEGER auto_increment,
     GENRE_NAME     CHARACTER VARYING(250) not null,
@@ -105,3 +105,31 @@ create table IF NOT EXISTS FILM_DIRECTORS
     constraint FILM_DIRECTORS_PK
         primary key (FILM_ID, DIRECTOR_ID)
 );
+
+create table IF NOT EXISTS REVIEWS
+(
+    REVIEW_ID INTEGER auto_increment,
+    CONTENT CHARACTER VARYING(512) not null,
+    POSITIVE BOOLEAN,
+    USER_ID INTEGER not null,
+    FILM_ID INTEGER not null,
+    constraint REVIEWS_PK
+        primary key (REVIEW_ID),
+    constraint REVIEWS_USERS_USER_ID_FK
+        foreign key (USER_ID) references USERS ON DELETE CASCADE,
+    constraint REVIEWS_FILMS_FILM_ID_FK
+        foreign key (FILM_ID) references FILMS ON DELETE CASCADE
+);
+
+create table IF NOT EXISTS REVIEW_LIKES
+(
+    REVIEW_ID INTEGER not null,
+    USER_ID INTEGER not null,
+    LIKE_DISLIKE INTEGER,
+    constraint REVIEW_LIKES_REVIEWS_REVIEW_ID_FK
+        foreign key (REVIEW_ID) references REVIEWS ON DELETE CASCADE,
+    constraint REVIEW_LIKES_USERS_USER_ID_FK
+        foreign key (USER_ID) references USERS ON DELETE CASCADE,
+    constraint REVIEW_LIKES_PK
+        primary key (REVIEW_ID, USER_ID)
+)
