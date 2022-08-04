@@ -17,23 +17,23 @@ public interface FilmStorage {
     Collection<Film> findAllFilms();
 
     //Получить фильм по уникальному идентификатору
-    Film findFilmById(Long id);
+    Film findFilmById(long id);
 
     //Добавить лайк
-    void addLike(Long id, Long userId);
+    void addLike(long id, long userId);
 
     //Удалить лайк
-    void deletingLike(Long id, Long userId);
+    void deletingLike(long id, long userId);
 
-    //Удалить фильм
-    void deleteFilmById(Long filmId);
+    //Удалить фильм по уникальному идентификатору
+    void deleteFilmById(long filmId);
 
     //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
     List<Film> findDirectorFilms(long directorId, SortingType sorting);
 
     //Получить список всех любимых фильмов
-    List<Film> findAllFavoriteMovies(Long id);
+    List<Film> findAllFavoriteMovies(long id);
 
     //Получить список рекомендованных фильмов для пользователя
-    List<Film> recommendationsFilm(Long id);
+    List<Film> recommendationsFilm(long id);
 }

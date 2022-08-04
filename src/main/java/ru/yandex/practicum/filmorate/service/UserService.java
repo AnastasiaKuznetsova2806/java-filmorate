@@ -40,26 +40,26 @@ public class UserService {
     }
 
     //Получение пользователя по уникальному идентификатору
-    public User findUserById(Long id) {
+    public User findUserById(long id) {
         return userStorage.findUserById(id);
     }
 
     //Добавление в друзья
-    public void addToFriends(Long id, Long friendId) {
+    public void addToFriends(long id, long friendId) {
         checkId(id);
         checkId(friendId);
         userStorage.addToFriends(id, friendId);
     }
 
     //Удаление из друзей
-    public void unfriending(Long id, Long friendId) {
+    public void unfriending(long id, long friendId) {
         checkId(id);
         checkId(friendId);
         userStorage.unfriending(id, friendId);
     }
 
     //Список пользователей, являющихся друзьями.
-    public List<User> findFriendList(Long id) {
+    public List<User> findFriendList(long id) {
         checkId(id);
 
         Set<Long> friendListId = new HashSet<>(userStorage.findFriendList(id));
@@ -67,7 +67,7 @@ public class UserService {
     }
 
     //Вывод списка общих друзей
-    public List<User> findListOfCommonFriends(Long id, Long otherId) {
+    public List<User> findListOfCommonFriends(long id, long otherId) {
         checkId(id);
         checkId(otherId);
 
@@ -79,6 +79,21 @@ public class UserService {
                 .collect(Collectors.toSet());
 
         return fillUsersList(friendSetId);
+    }
+
+    //Удаление пользователя
+    public void deleteUserById(long userId) {
+        userStorage.deleteUserById(userId);
+    }
+
+    //Получуние списка рекомендованных фильмов для пользователя
+    public List<Film> recommendationsFilms(long id) {
+        checkId(id);
+        List<Film> userFilms = new ArrayList<>(filmStorage.findAllFavoriteMovies(id));
+        List<Film> recommendationsFilms = new ArrayList<>(filmStorage.recommendationsFilm(id));
+        return recommendationsFilms.stream()
+                .filter(film -> !userFilms.contains(film))
+                .collect(Collectors.toList());
     }
 
     private void checkId(Long id) {
@@ -93,20 +108,4 @@ public class UserService {
                 .map(this::findUserById)
                 .collect(Collectors.toList());
     }
-
-    //Удаление пользователя
-    public void deleteUserById(Long userId) {
-        userStorage.deleteUserById(userId);
-    }
-
-    //Получуние списка рекомендованных фильмов для пользователя
-    public List<Film> recommendationsFilms(Long id) {
-        checkId(id);
-        List<Film> userFilms = new ArrayList<>(filmStorage.findAllFavoriteMovies(id));
-        List<Film> recommendationsFilms = new ArrayList<>(filmStorage.recommendationsFilm(id));
-        return recommendationsFilms.stream()
-                .filter(film -> !userFilms.contains(film))
-                .collect(Collectors.toList());
-    }
-
 }

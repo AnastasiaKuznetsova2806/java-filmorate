@@ -26,7 +26,7 @@ public class MpaController {
     }
 
     @GetMapping(value = "/mpa/{id}")
-    public Mpa findMpaById(@PathVariable Integer id) {
+    public Mpa findMpaById(@PathVariable int id) {
         return mpaService.findMpaById(id);
     }
 }

@@ -79,7 +79,7 @@ public class UserDbStorage implements UserStorage{
     }
 
     @Override
-    public User findUserById(Long id) {
+    public User findUserById(long id) {
         String sql = "select * from USERS where USER_ID = ?; ";
 
         User user = jdbcTemplate.query(sql, rs -> rs.next() ? makeUser(rs) : null, id);
@@ -91,27 +91,27 @@ public class UserDbStorage implements UserStorage{
     }
 
     //Добавление в друзья
-    public void addToFriends(Long id, Long friendId) {
+    public void addToFriends(long id, long friendId) {
         findUserById(id);
         findUserById(friendId);
         friendStorage.addToFriends(id, friendId);
     }
 
     //Удаление из друзей
-    public void unfriending(Long id, Long friendId) {
+    public void unfriending(long id, long friendId) {
         findUserById(id);
         findUserById(friendId);
         friendStorage.unfriending(id, friendId);
     }
 
     //Список пользователей, являющихся друзьями.
-    public List<Long> findFriendList(Long id) {
+    public List<Long> findFriendList(long id) {
         return friendStorage.findFriendList(id);
     }
 
     //Удаление пользователя
     @Override
-    public void deleteUserById(Long userId) {
+    public void deleteUserById(long userId) {
         findUserById(userId);
 
         String sql = "delete from USERS where USER_ID = ?; ";

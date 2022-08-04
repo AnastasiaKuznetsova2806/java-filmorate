@@ -95,7 +95,6 @@ public class FilmDbStorage implements FilmStorage {
         if (film.getDirectors().isEmpty()) {
             film.setDirectors(null);
         }
-
         directorStorage.addDirector(film.getId(), film.getDirectors());
         return film;
     }
@@ -109,7 +108,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Film findFilmById(Long id) {
+    public Film findFilmById(long id) {
         String sql = "select * " +
                 "from FILMS F " +
                 "left join MPA M on F.MPA_ID = M.MPA_ID " +
@@ -125,19 +124,19 @@ public class FilmDbStorage implements FilmStorage {
 
     //Добавление лайка
     @Override
-    public void addLike(Long id, Long userId) {
+    public void addLike(long id, long userId) {
         likeStorage.addLike(id, userId);
     }
 
     //Удаление лайка
     @Override
-    public void deletingLike(Long id, Long userId) {
+    public void deletingLike(long id, long userId) {
         likeStorage.deletingLike(id, userId);
     }
 
     //Удаление фильма
     @Override
-    public void deleteFilmById(Long filmId) {
+    public void deleteFilmById(long filmId) {
         findFilmById(filmId);
 
         String sql = "delete from FILMS where FILM_ID = ?";
@@ -171,7 +170,7 @@ public class FilmDbStorage implements FilmStorage {
 
     //Получение списка всех любимых фильмов
     @Override
-    public List<Film> findAllFavoriteMovies(Long id) {
+    public List<Film> findAllFavoriteMovies(long id) {
         String sql = "select * " +
                 "from LIKES L " +
                 "join FILMS F on F.FILM_ID = L.FILM_ID " +
@@ -182,7 +181,7 @@ public class FilmDbStorage implements FilmStorage {
 
     //Получение списка рекомендованных фильмов для пользователя
     @Override
-    public List<Film> recommendationsFilm(Long id) {
+    public List<Film> recommendationsFilm(long id) {
         String sql = "with GENERAL_FILMS as ( " +
                 "select" +
                 "    l.USER_ID user_recommendations, " +

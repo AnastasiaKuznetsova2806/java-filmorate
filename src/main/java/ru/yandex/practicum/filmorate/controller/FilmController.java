@@ -39,21 +39,21 @@ public class FilmController {
     }
 
     @GetMapping(value = "/films/{id}")
-    public Film findFilmById(@PathVariable Long id) {
+    public Film findFilmById(@PathVariable long id) {
         return filmService.findFilmById(id);
     }
 
     @PutMapping(value = "/films/{id}/like/{userId}")
-    public void addLike(@PathVariable Long id,
-                        @PathVariable Long userId) {
-        log.info("Получен запрос на добавлене лайка");
+    public void addLike(@PathVariable long id,
+                        @PathVariable long userId) {
+        log.info("Получен запрос на добавлене лайка - '{}' пользувателю - '{}'", id, userId);
         filmService.addLike(id, userId);
     }
 
     @DeleteMapping(value = "/films/{id}/like/{userId}")
-    public void deletingLike(@PathVariable Long id,
-                             @PathVariable Long userId) {
-        log.info("Получен запрос на удаление лайка");
+    public void deletingLike(@PathVariable long id,
+                             @PathVariable long userId) {
+        log.info("Получен запрос на удаление лайка - '{}' пользувателю - '{}'", id, userId);
         filmService.deletingLike(id, userId);
     }
 
@@ -63,7 +63,7 @@ public class FilmController {
     }
 
     @DeleteMapping(value = "/films/{filmId}")
-    public void deleteFilmById(@PathVariable Long filmId) {
+    public void deleteFilmById(@PathVariable long filmId) {
         log.info("Получен запрос на удаление фильма '{}'", filmId);
         filmService.deleteFilmById(filmId);
     }

@@ -17,5 +17,5 @@ public interface GenreStorage {
     Collection<Genre> findAllGenres();
 
     //Получение жанра по уникальному идентификатору
-    Genre findGenreById(Integer id);
+    Genre findGenreById(int id);
 }
