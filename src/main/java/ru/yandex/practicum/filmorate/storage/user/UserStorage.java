@@ -18,15 +18,15 @@ public interface UserStorage {
     //Получить пользователя по уникальному идентификатору
     User findUserById(Long id);
 
-    //Добавление в друзья
+    //Добавить в друзья
     void addToFriends(Long id, Long friendId);
 
-    //Удаление из друзей
+    //Удалить из друзей
     void unfriending(Long id, Long friendId);
 
-    //Список пользователей, являющихся друзьями.
+    //Получить список пользователей, являющихся друзьями.
     List<Long> findFriendList(Long id);
 
-    //Удаление пользователя
+    //Удалить пользователя
     void deleteUserById(Long userId);
 }

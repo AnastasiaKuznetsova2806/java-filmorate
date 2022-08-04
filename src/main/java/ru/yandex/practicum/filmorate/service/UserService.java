@@ -3,23 +3,25 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import javax.validation.ValidationException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserStorage userStorage;
+    private final FilmStorage filmStorage;
 
     @Autowired
-    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage,
+                       FilmStorage filmStorage) {
         this.userStorage = userStorage;
+        this.filmStorage = filmStorage;
     }
 
     //Создание пользователя
@@ -96,4 +98,15 @@ public class UserService {
     public void deleteUserById(Long userId) {
         userStorage.deleteUserById(userId);
     }
+
+    //Получуние списка рекомендованных фильмов для пользователя
+    public List<Film> recommendationsFilms(Long id) {
+        checkId(id);
+        List<Film> userFilms = new ArrayList<>(filmStorage.findAllFavoriteMovies(id));
+        List<Film> recommendationsFilms = new ArrayList<>(filmStorage.recommendationsFilm(id));
+        return recommendationsFilms.stream()
+                .filter(film -> !userFilms.contains(film))
+                .collect(Collectors.toList());
+    }
+
 }
