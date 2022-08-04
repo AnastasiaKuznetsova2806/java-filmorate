@@ -169,6 +169,42 @@ public class FilmDbStorage implements FilmStorage {
                 .collect(Collectors.toList());
     }
 
+    //Получение списка всех любимых фильмов
+    @Override
+    public List<Film> findAllFavoriteMovies(Long id) {
+        String sql = "select * " +
+                "from LIKES L " +
+                "join FILMS F on F.FILM_ID = L.FILM_ID " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where L.USER_ID = ?; ";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id);
+    }
+
+    //Получение списка рекомендованных фильмов для пользователя
+    @Override
+    public List<Film> recommendationsFilm(Long id) {
+        String sql = "with GENERAL_FILMS as ( " +
+                "select" +
+                "    l.USER_ID user_recommendations, " +
+                "    count(1) cnt_films " +
+                "from LIKES l " +
+                "join LIKES l2 on l2.FILM_ID = l.FILM_ID " +
+                "                     and l2.USER_ID != l.USER_ID " +
+                "where l2.USER_ID = ? " +
+                "group by user_recommendations " +
+                "order by cnt_films desc " +
+                ") " +
+                "select * " +
+                "from LIKES L " +
+                "join FILMS F on F.FILM_ID = L.FILM_ID " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where L.USER_ID = (select user_recommendations " +
+                "                   from GENERAL_FILMS " +
+                "                   group by user_recommendations " +
+                "                   limit 1); ";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id);
+    }
+
     private Film makeFilm(ResultSet rs) throws SQLException {
         long id = rs.getLong("FILM_ID");
         String name = rs.getString("FILM_NAME");
