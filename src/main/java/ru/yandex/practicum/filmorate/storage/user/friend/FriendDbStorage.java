@@ -58,13 +58,13 @@ public class FriendDbStorage {
     //Проверка статуса дружбы
     private void checkStatus (Long id, Long friendId) {
         String sql = "select " +
-                "  case\n" +
-                "    when f2.USER_ID is null then 1\n" +
-                "    else 2\n" +
-                "  end status\n" +
-                "from FRIENDS f\n" +
-                "         left join FRIENDS f2 ON f2.USER_ID = f.FRIEND_ID\n" +
-                "where f.USER_ID = ? and f.FRIEND_ID = ?;";
+                "  case " +
+                "    when f2.USER_ID is null then 1 " +
+                "    else 2 " +
+                "  end status " +
+                "from FRIENDS f " +
+                "         left join FRIENDS f2 ON f2.USER_ID = f.FRIEND_ID " +
+                "where f.USER_ID = ? and f.FRIEND_ID = ?; ";
 
         FriendStatus status = jdbcTemplate.query(sql, rs -> rs.next() ? makeFriendStatus(rs) : null, id, friendId);
 

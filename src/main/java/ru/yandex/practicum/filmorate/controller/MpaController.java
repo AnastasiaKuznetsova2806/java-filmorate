@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.Collection;
 
-@RestController
 @Slf4j
+@RestController
 public class MpaController {
     private final MpaService mpaService;
 

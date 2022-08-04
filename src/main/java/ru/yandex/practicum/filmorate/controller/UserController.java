@@ -10,8 +10,8 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
-@RestController
 @Slf4j
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public User createUser( @Valid @RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на добавление объекта: '{}'", user);
         return userService.createUser(user);
     }
