@@ -210,7 +210,12 @@ public class FilmDbStorage implements FilmStorage {
                 "from FILMS F " +
                 "left join MPA M on F.MPA_ID = M.MPA_ID " +
                 "where lcase(F.FILM_NAME) like '%" + query.toLowerCase() + "%'; ";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+
+        return films.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -221,7 +226,12 @@ public class FilmDbStorage implements FilmStorage {
                 "left join FILMS F on F.FILM_ID = FD.FILM_ID " +
                 "left join MPA M on F.MPA_ID = M.MPA_ID " +
                 "where upper(D.DIRECTOR_NAME) like '%" + query.toUpperCase() + "%'; ";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+
+        return films.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
