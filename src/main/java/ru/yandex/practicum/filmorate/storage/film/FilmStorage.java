@@ -36,4 +36,10 @@ public interface FilmStorage {
 
     //Получить список рекомендованных фильмов для пользователя
     List<Film> recommendationsFilm(long id);
+
+    //Поиск фильмов по названию
+    List<Film> findFilmByTitle(String query);
+
+    //Поиск фильмов по режиссёру
+    List<Film> findFilmByDirector(String query);
 }

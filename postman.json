@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "abeeb866-fc3f-40de-b07e-215254295b8f",
-    "name": "add-feed",
+    "_postman_id": "d903d89c-f953-459d-8e49-c271ca210324",
+    "name": "add-search",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "2036415"
   },
@@ -9979,10 +9979,10 @@
       ]
     },
     {
-      "name": "add-reviews",
+      "name": "add-director",
       "item": [
         {
-          "name": "Get all reviews",
+          "name": "Get all directors before create",
           "event": [
             {
               "listen": "test",
@@ -9991,9 +9991,74 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get user\", function () {\r",
+                  "\r",
+                  "pm.test(\"Test list directors\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.length).to.eql(0);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/directors",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get director 1 before create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -10009,12 +10074,20 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews",
+              "raw": "{{baseUrl}}/directors/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "directors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "(Required) "
+                }
               ]
             }
           },
@@ -10162,193 +10235,7 @@
           ]
         },
         {
-          "name": "Get empty film reviews",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get user\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(0);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ],
-              "query": [
-                {
-                  "key": "filmId",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Create bad Review",
+          "name": "Create Director",
           "event": [
             {
               "listen": "test",
@@ -10357,13 +10244,10 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
                   "});\r",
-                  "pm.test(\"Test create review\", function () {\r",
+                  "pm.test(\"Test create director\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is soo bad.');\r",
-                  "    pm.expect(jsonData.isPositive).to.false;\r",
-                  "    pm.expect(jsonData.userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData.filmId).to.eql(1);    \r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Director');\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -10384,7 +10268,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 1,\n  \"filmId\": 1\n}",
+              "raw": "{\n  \"id\": 10,\n  \"name\": \"Director\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -10392,12 +10276,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/reviews",
+              "raw": "{{baseUrl}}/directors",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "directors"
               ]
             }
           },
@@ -10441,7 +10325,7 @@
           ]
         },
         {
-          "name": "Get bad review",
+          "name": "Get director 1 after create",
           "event": [
             {
               "listen": "test",
@@ -10450,14 +10334,10 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get review\", function () {\r",
+                  "pm.test(\"Test get director\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is soo bad.');\r",
-                  "    pm.expect(jsonData.isPositive).to.false;\r",
-                  "    pm.expect(jsonData.userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData.filmId).to.eql(1);  \r",
-                  "    pm.expect(jsonData.useful).to.eql(0);  \r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Director');\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -10473,18 +10353,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId",
+              "raw": "{{baseUrl}}/directors/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews",
-                ":reviewId"
+                "directors",
+                ":id"
               ],
               "variable": [
                 {
-                  "key": "reviewId",
-                  "value": "1"
+                  "key": "id",
+                  "value": "1",
+                  "description": "(Required) "
                 }
               ]
             }
@@ -10633,7 +10514,7 @@
           ]
         },
         {
-          "name": "Review create Fail content",
+          "name": "Create director Fail name",
           "event": [
             {
               "listen": "test",
@@ -10661,7 +10542,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"isPositive\": false,\n  \"userId\": 1,\n  \"filmId\": 1\n}",
+              "raw": "{\n  \"id\": 10,\n  \"name\": \" \"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -10669,12 +10550,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/users",
+              "raw": "{{baseUrl}}/directors",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "users"
+                "directors"
               ]
             }
           },
@@ -10718,432 +10599,7 @@
           ]
         },
         {
-          "name": "Review create Fail user",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 404\", function () {\r",
-                  "     pm.expect(pm.response.code).to.be.oneOf([404]);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": -1,\n  \"filmId\": 1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review create Fail user null",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 400\", function () {\r",
-                  "     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"filmId\": 1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review create Fail film",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 404\", function () {\r",
-                  "     pm.expect(pm.response.code).to.be.oneOf([404]);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 1,\n  \"filmId\": -1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review create Fail film null",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 400\", function () {\r",
-                  "     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review create Fail positive null",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 400\", function () {\r",
-                  "     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"userId\": 1,\n  \"filmId\": 1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review update to positive",
+          "name": "Update Director",
           "event": [
             {
               "listen": "test",
@@ -11152,11 +10608,10 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test update review\", function () {\r",
+                  "pm.test(\"Test update director\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is not too bad.');\r",
-                  "    pm.expect(jsonData.isPositive).to.true;\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Director updated');\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -11177,7 +10632,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"reviewId\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Director updated\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -11185,12 +10640,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/reviews",
+              "raw": "{{baseUrl}}/directors",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "directors"
               ]
             }
           },
@@ -11234,414 +10689,23 @@
           ]
         },
         {
-          "name": "Get not bad review",
+          "name": "Update unknown director",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
                   "});\r",
-                  "pm.test(\"Test get user\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is not too bad.');\r",
-                  "    pm.expect(jsonData.isPositive).to.true;\r",
-                  "    pm.expect(jsonData.userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData.filmId).to.eql(1);  \r",
-                  "    pm.expect(jsonData.useful).to.eql(0);  \r",
-                  "});"
+                  ""
                 ],
                 "type": "text/javascript"
               }
             }
           ],
           "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews",
-                ":reviewId"
-              ],
-              "variable": [
-                {
-                  "key": "reviewId",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Get film reviews",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get user\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].content).to.eql('This film is not too bad.');\r",
-                  "    pm.expect(jsonData[0].isPositive).to.true;\r",
-                  "    pm.expect(jsonData[0].userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData[0].filmId).to.eql(1);  \r",
-                  "    pm.expect(jsonData[0].useful).to.eql(0);  \r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ],
-              "query": [
-                {
-                  "key": "filmId",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Create bad Review with like",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
-                  "});\r",
-                  "pm.test(\"Test create review\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(2);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is soo bad.');\r",
-                  "    pm.expect(jsonData.isPositive).to.false;\r",
-                  "    pm.expect(jsonData.userId).to.eql(2);    \r",
-                  "    pm.expect(jsonData.filmId).to.eql(1);    \r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
+            "method": "PUT",
             "header": [
               {
                 "key": "Content-Type",
@@ -11654,7 +10718,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 2,\n  \"filmId\": 1\n}",
+              "raw": "{\n  \"id\": 10,\n  \"name\": \"Director updated\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -11662,12 +10726,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/reviews",
+              "raw": "{{baseUrl}}/directors",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "directors"
               ]
             }
           },
@@ -11675,7 +10739,7 @@
             {
               "name": "OK",
               "originalRequest": {
-                "method": "POST",
+                "method": "PUT",
                 "header": [],
                 "body": {
                   "mode": "raw",
@@ -11711,7 +10775,191 @@
           ]
         },
         {
-          "name": "Get film reviews without limit",
+          "name": "Get unknown director 10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/directors/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "10",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get all directors",
           "event": [
             {
               "listen": "test",
@@ -11720,9 +10968,667 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get film reviews\", function () {\r",
+                  "\r",
+                  "pm.test(\"Test list directors\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].name).to.eql('Director updated');\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/directors",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Film update director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test updated film\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('2089-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors[0].id).to.eql(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"2089-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5},\n  \"directors\": [{ \"id\": 1}]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/films",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Film create with director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+                  "});\r",
+                  "pm.test(\"Test film with director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(3);\r",
+                  "    pm.expect(jsonData.name).to.eql('New film with director');\r",
+                  "    pm.expect(jsonData.description).to.eql('Film with director');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+                  "    pm.expect(jsonData.duration).to.eql(120);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+                  "    pm.expect(jsonData.genres.length).to.eql(1);\r",
+                  "    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData.directors[0].id).to.eql(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New film with director\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"Film with director\",\n  \"duration\": 120,\n  \"mpa\": { \"id\": 3},\n  \"genres\": [{ \"id\": 1}],\n  \"directors\": [{ \"id\": 1}]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/films",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get films with directors",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test films with directors\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.length).to.eql(3);\r",
+                  "\r",
+                  "    pm.expect(jsonData[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].id).to.eql(1);\r",
+                  "\r",
+                  "    pm.expect(jsonData[1].id).to.eql(2);\r",
+                  "    pm.expect(jsonData[1].directors.length).to.eql(0);\r",
+                  "\r",
+                  "    pm.expect(jsonData[2].id).to.eql(3);\r",
+                  "    pm.expect(jsonData[2].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[2].directors[0].id).to.eql(1);\r",
+                  "\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get films by director sort by year",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Get films by director sort by year\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.length).to.eql(2);\r",
+                  "\r",
+                  "    pm.expect(jsonData[0].id).to.eql(3);\r",
+                  "    pm.expect(jsonData[0].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].releaseDate).to.eql(\"1999-04-30\");\r",
+                  "    pm.expect(jsonData[0].genres.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].genres[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].id).to.eql(1);\r",
+                  "\r",
+                  "    pm.expect(jsonData[1].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[1].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[1].releaseDate).to.eql(\"2089-04-17\");\r",
+                  "    pm.expect(jsonData[1].directors[0].id).to.eql(1);\r",
+                  "    if (jsonData[1].genres != null) {\r",
+                  "        pm.expect(jsonData[1].genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -11738,693 +11644,24 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1",
+              "raw": "{{baseUrl}}/films/director/:directorId?sortBy=year",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "films",
+                "director",
+                ":directorId"
               ],
               "query": [
                 {
-                  "key": "filmId",
-                  "value": "1"
+                  "key": "sortBy",
+                  "value": "year"
                 }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Get film reviews limit 1",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get film reviews limit\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].content).to.eql('This film is not too bad.');\r",
-                  "    pm.expect(jsonData[0].isPositive).to.true;\r",
-                  "    pm.expect(jsonData[0].userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData[0].filmId).to.eql(1);  \r",
-                  "    pm.expect(jsonData[0].useful).to.eql(0);  \r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1&count=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ],
-              "query": [
-                {
-                  "key": "filmId",
-                  "value": "1"
-                },
-                {
-                  "key": "count",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Create good Review with like",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
-                  "});\r",
-                  "pm.test(\"Test create review\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.reviewId).to.eql(3);\r",
-                  "    pm.expect(jsonData.content).to.eql('This film is beatiful.');\r",
-                  "    pm.expect(jsonData.isPositive).to.true;\r",
-                  "    pm.expect(jsonData.userId).to.eql(1);    \r",
-                  "    pm.expect(jsonData.filmId).to.eql(2);    \r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"This film is beatiful.\",\n  \"isPositive\": true,\n  \"userId\": 1,\n  \"filmId\": 2\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Get all reviews with count",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get reviews\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(3);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews?count=3",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ],
-              "query": [
-                {
-                  "key": "count",
-                  "value": "3"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review 2 add like",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId/like/:userId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews",
-                ":reviewId",
-                "like",
-                ":userId"
               ],
               "variable": [
                 {
-                  "key": "reviewId",
-                  "value": "2"
-                },
-                {
-                  "key": "userId",
+                  "key": "directorId",
                   "value": "1"
                 }
               ]
@@ -12434,24 +11671,15 @@
             {
               "name": "OK",
               "originalRequest": {
-                "method": "PUT",
+                "method": "GET",
                 "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
                 "url": {
-                  "raw": "{{baseUrl}}/users",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users"
+                    "films"
                   ]
                 }
               },
@@ -12466,95 +11694,78 @@
               ],
               "cookie": [],
               "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Review 1 add dislike",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             },
-            "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId/dislike/:userId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews",
-                ":reviewId",
-                "dislike",
-                ":userId"
-              ],
-              "variable": [
-                {
-                  "key": "reviewId",
-                  "value": "1"
-                },
-                {
-                  "key": "userId",
-                  "value": "2"
-                }
-              ]
-            }
-          },
-          "response": [
             {
-              "name": "OK",
+              "name": "Not Found",
               "originalRequest": {
-                "method": "PUT",
+                "method": "GET",
                 "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
                 "url": {
-                  "raw": "{{baseUrl}}/users",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users"
+                    "films"
                   ]
                 }
               },
-              "status": "OK",
-              "code": 200,
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
               "_postman_previewlanguage": "text",
               "header": [
                 {
@@ -12568,7 +11779,7 @@
           ]
         },
         {
-          "name": "Get all reviews after likes",
+          "name": "Get films by director sort by likes",
           "event": [
             {
               "listen": "test",
@@ -12577,18 +11788,18 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get reviews after like\", function () {\r",
+                  "pm.test(\"Test films by director sort by likes\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(3);\r",
+                  "    pm.expect(jsonData.length).to.eql(2);\r",
                   "\r",
-                  "    pm.expect(jsonData[0].reviewId).to.eql(2);\r",
-                  "    pm.expect(jsonData[0].useful).to.eql(1); \r",
+                  "    pm.expect(jsonData[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].id).to.eql(1);\r",
                   "\r",
-                  "    pm.expect(jsonData[1].reviewId).to.eql(3);\r",
-                  "    pm.expect(jsonData[1].useful).to.eql(0); \r",
+                  "    pm.expect(jsonData[1].id).to.eql(3);\r",
+                  "    pm.expect(jsonData[1].directors.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[1].directors[0].id).to.eql(1);\r",
                   "\r",
-                  "    pm.expect(jsonData[2].reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData[2].useful).to.eql(-1); \r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -12604,18 +11815,189 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews",
+              "raw": "{{baseUrl}}/films/director/:directorId?sortBy=likes",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "films",
+                "director",
+                ":directorId"
               ],
               "query": [
                 {
-                  "key": "count",
+                  "key": "sortBy",
+                  "value": "likes"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "directorId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get film with director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test get film with director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(3);\r",
+                  "    pm.expect(jsonData.name).to.eql('New film with director');\r",
+                  "    pm.expect(jsonData.description).to.eql('Film with director');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+                  "    pm.expect(jsonData.duration).to.eql(120);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+                  "    pm.expect(jsonData.genres.length).to.eql(1);\r",
+                  "    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData.directors[0].id).to.eql(1);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
                   "value": "3",
-                  "disabled": true
+                  "description": "(Required) "
                 }
               ]
             }
@@ -12627,12 +12009,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
+                    "films",
                     ":id"
                   ],
                   "variable": [
@@ -12662,12 +12044,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
+                    "films",
                     ":id"
                   ],
                   "variable": [
@@ -12697,12 +12079,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
+                    "films",
                     ":id"
                   ],
                   "variable": [
@@ -12732,12 +12114,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
+                    "films",
                     ":id"
                   ],
                   "variable": [
@@ -12764,7 +12146,7 @@
           ]
         },
         {
-          "name": "Get film reviews after likes",
+          "name": "Film update remove director",
           "event": [
             {
               "listen": "test",
@@ -12773,17 +12155,224 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get film reviews after like\", function () {\r",
+                  "pm.test(\"Test Film update remove director\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(2);\r",
-                  "\r",
-                  "    pm.expect(jsonData[0].reviewId).to.eql(2);\r",
-                  "    pm.expect(jsonData[0].useful).to.eql(1); \r",
-                  "    pm.expect(jsonData[0].filmId).to.eql(1);  \r",
-                  "\r",
-                  "    pm.expect(jsonData[1].reviewId).to.eql(1);\r",
-                  "    pm.expect(jsonData[1].useful).to.eql(-1); \r",
-                  "    pm.expect(jsonData[1].filmId).to.eql(1);  \r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors).null;\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/films",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get film without director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test get film without director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors.length).to.eql(0);\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -12799,17 +12388,298 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1",
+              "raw": "{{baseUrl}}/films/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews"
+                "films",
+                ":id"
               ],
-              "query": [
+              "variable": [
                 {
-                  "key": "filmId",
-                  "value": "1"
+                  "key": "id",
+                  "value": "1",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Create temp Director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+                  "});\r",
+                  "pm.test(\"Test create director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(2);\r",
+                  "    pm.expect(jsonData.name).to.eql('Temp Director');\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 11,\n  \"name\": \"Temp Director\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/directors",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get director 2 after create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test get director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(2);\r",
+                  "    pm.expect(jsonData.name).to.eql('Temp Director');\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/directors/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "2",
+                  "description": "(Required) "
                 }
               ]
             }
@@ -12958,7 +12828,410 @@
           ]
         },
         {
-          "name": "Delete bad review",
+          "name": "Film update temp director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test updated film\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors[0].id).to.eql(2);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5},\n  \"directors\": [{ \"id\": 2}]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/films",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get film with temp director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test get film with director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors[0].id).to.eql(2);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Delete director 2",
           "event": [
             {
               "listen": "test",
@@ -12982,18 +13255,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId",
+              "raw": "{{baseUrl}}/directors/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews",
-                ":reviewId"
+                "directors",
+                ":id"
               ],
               "variable": [
                 {
-                  "key": "reviewId",
-                  "value": "1"
+                  "key": "id",
+                  "value": "2",
+                  "description": "(Required) "
                 }
               ]
             }
@@ -13142,7 +13416,388 @@
           ]
         },
         {
-          "name": "Get bad review after delete",
+          "name": "Get director 2 after delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/directors/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "directors",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "2",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get film with deleted director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test get film with temp director\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).to.eql(1);\r",
+                  "    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData.duration).to.eql(190);\r",
+                  "    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData.directors.length).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get films by deleted director",
           "event": [
             {
               "listen": "test",
@@ -13166,207 +13821,25 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/reviews/:reviewId",
+              "raw": "{{baseUrl}}/films/director/:director?sortBy=likes",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "reviews",
-                ":reviewId"
-              ],
-              "variable": [
-                {
-                  "key": "reviewId",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Conflict",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            },
-            {
-              "name": "Internal Server Error",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "body": ""
-            }
-          ]
-        },
-        {
-          "name": "Get film reviews after delete",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get reviews after delete\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].reviewId).to.eql(2);\r",
-                  "    pm.expect(jsonData[0].useful).to.eql(1); \r",
-                  "    pm.expect(jsonData[0].filmId).to.eql(1);  \r",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews?filmId=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
+                "films",
+                "director",
+                ":director"
               ],
               "query": [
                 {
-                  "key": "filmId",
-                  "value": "1"
+                  "key": "sortBy",
+                  "value": "likes"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "director",
+                  "value": "2"
                 }
               ]
             }
@@ -13378,20 +13851,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13413,20 +13878,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13448,20 +13905,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13483,20 +13932,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/users/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13517,76 +13958,17 @@
       ]
     },
     {
-      "name": "add-feed",
+      "name": "add-search",
       "item": [
         {
-          "name": "User 1 get feed",
+          "name": "Film with director add Like",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "pm.test(\"Test get feed user 1\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.length).to.eql(9);\r",
-                  "\r",
-                  "    pm.expect(jsonData[0].eventId).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[0].entityId).to.eql(2);\r",
-                  "    pm.expect(jsonData[0].eventType).to.eql(\"FRIEND\");\r",
-                  "    pm.expect(jsonData[0].operation).to.eql(\"ADD\");\r",
-                  "    pm.expect(jsonData[0].timestamp).to.above(1655798323570);\r",
-                  "\r",
-                  "    pm.expect(jsonData[1].eventId).to.eql(2);\r",
-                  "    pm.expect(jsonData[1].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[1].entityId).to.eql(3);\r",
-                  "    pm.expect(jsonData[1].eventType).to.eql(\"FRIEND\");\r",
-                  "    pm.expect(jsonData[1].operation).to.eql(\"ADD\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[2].eventId).to.eql(4);\r",
-                  "    pm.expect(jsonData[2].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[2].entityId).to.eql(2);\r",
-                  "    pm.expect(jsonData[2].eventType).to.eql(\"FRIEND\");\r",
-                  "    pm.expect(jsonData[2].operation).to.eql(\"REMOVE\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[3].eventId).to.eql(5);\r",
-                  "    pm.expect(jsonData[3].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[3].entityId).to.eql(2);\r",
-                  "    pm.expect(jsonData[3].eventType).to.eql(\"LIKE\");\r",
-                  "    pm.expect(jsonData[3].operation).to.eql(\"ADD\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[4].eventId).to.eql(6);\r",
-                  "    pm.expect(jsonData[4].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[4].entityId).to.eql(2);\r",
-                  "    pm.expect(jsonData[4].eventType).to.eql(\"LIKE\");\r",
-                  "    pm.expect(jsonData[4].operation).to.eql(\"REMOVE\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[5].eventId).to.eql(7);\r",
-                  "    pm.expect(jsonData[5].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[5].entityId).to.eql(1);\r",
-                  "    pm.expect(jsonData[5].eventType).to.eql(\"REVIEW\");\r",
-                  "    pm.expect(jsonData[5].operation).to.eql(\"ADD\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[6].eventId).to.eql(8);\r",
-                  "    pm.expect(jsonData[6].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[6].entityId).to.eql(1);\r",
-                  "    pm.expect(jsonData[6].eventType).to.eql(\"REVIEW\");\r",
-                  "    pm.expect(jsonData[6].operation).to.eql(\"UPDATE\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[7].eventId).to.eql(10);\r",
-                  "    pm.expect(jsonData[7].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[7].entityId).to.eql(3);\r",
-                  "    pm.expect(jsonData[7].eventType).to.eql(\"REVIEW\");\r",
-                  "    pm.expect(jsonData[7].operation).to.eql(\"ADD\");\r",
-                  "\r",
-                  "    pm.expect(jsonData[8].eventId).to.eql(11);\r",
-                  "    pm.expect(jsonData[8].userId).to.eql(1);\r",
-                  "    pm.expect(jsonData[8].entityId).to.eql(1);\r",
-                  "    pm.expect(jsonData[8].eventType).to.eql(\"REVIEW\");\r",
-                  "    pm.expect(jsonData[8].operation).to.eql(\"REMOVE\");\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -13594,7 +13976,7 @@
             }
           ],
           "request": {
-            "method": "GET",
+            "method": "PUT",
             "header": [
               {
                 "key": "Accept",
@@ -13602,19 +13984,25 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/users/:id/feed",
+              "raw": "{{baseUrl}}/films/:filmId/like/:userId",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "users",
-                ":id",
-                "feed"
+                "films",
+                ":filmId",
+                "like",
+                ":userId"
               ],
               "variable": [
                 {
-                  "key": "id",
-                  "value": "1"
+                  "key": "filmId",
+                  "value": "3"
+                },
+                {
+                  "key": "userId",
+                  "value": "1",
+                  "description": "(Required) "
                 }
               ]
             }
@@ -13623,20 +14011,27 @@
             {
               "name": "OK",
               "originalRequest": {
-                "method": "GET",
+                "method": "PUT",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films/:id/like/:userId",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "films",
-                    ":id"
+                    ":id",
+                    "like",
+                    ":userId"
                   ],
                   "variable": [
                     {
                       "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "userId",
                       "value": "-29029902",
                       "description": "(Required) "
                     }
@@ -13649,7 +14044,7 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "*/*"
+                  "value": "text/plain"
                 }
               ],
               "cookie": [],
@@ -13658,20 +14053,27 @@
             {
               "name": "Not Found",
               "originalRequest": {
-                "method": "GET",
+                "method": "PUT",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films/:id/like/:userId",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "films",
-                    ":id"
+                    ":id",
+                    "like",
+                    ":userId"
                   ],
                   "variable": [
                     {
                       "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "userId",
                       "value": "-29029902",
                       "description": "(Required) "
                     }
@@ -13693,20 +14095,27 @@
             {
               "name": "Conflict",
               "originalRequest": {
-                "method": "GET",
+                "method": "PUT",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films/:id/like/:userId",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "films",
-                    ":id"
+                    ":id",
+                    "like",
+                    ":userId"
                   ],
                   "variable": [
                     {
                       "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "userId",
                       "value": "-29029902",
                       "description": "(Required) "
                     }
@@ -13728,20 +14137,27 @@
             {
               "name": "Internal Server Error",
               "originalRequest": {
-                "method": "GET",
+                "method": "PUT",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films/:id/like/:userId",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "films",
-                    ":id"
+                    ":id",
+                    "like",
+                    ":userId"
                   ],
                   "variable": [
                     {
                       "key": "id",
+                      "value": "-29029902",
+                      "description": "(Required) "
+                    },
+                    {
+                      "key": "userId",
                       "value": "-29029902",
                       "description": "(Required) "
                     }
@@ -13763,7 +14179,7 @@
           ]
         },
         {
-          "name": "User 2 get feed",
+          "name": "Search films anyway",
           "event": [
             {
               "listen": "test",
@@ -13772,22 +14188,32 @@
                   "pm.test(\"Status code is 200\", function () {\r",
                   "    pm.response.to.have.status(200);\r",
                   "});\r",
-                  "pm.test(\"Test get feed user 2\", function () {\r",
+                  "pm.test(\"Test films with directors\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.length).to.eql(2);\r",
                   "\r",
-                  "    pm.expect(jsonData[0].eventId).to.eql(3);\r",
-                  "    pm.expect(jsonData[0].userId).to.eql(2);\r",
-                  "    pm.expect(jsonData[0].entityId).to.eql(3);\r",
-                  "    pm.expect(jsonData[0].eventType).to.eql(\"FRIEND\");\r",
-                  "    pm.expect(jsonData[0].operation).to.eql(\"ADD\");\r",
-                  "    pm.expect(jsonData[0].timestamp).to.above(1655798323570);\r",
+                  "    pm.expect(jsonData[0].id).to.eql(3);\r",
+                  "    pm.expect(jsonData[0].name).to.eql('New film with director');\r",
+                  "    pm.expect(jsonData[0].description).to.eql('Film with director');    \r",
+                  "    pm.expect(jsonData[0].releaseDate).to.eql('1999-04-30');\r",
+                  "    pm.expect(jsonData[0].duration).to.eql(120);\r",
+                  "    pm.expect(jsonData[0].mpa.id).to.eql(3);\r",
+                  "    pm.expect(jsonData[0].genres.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].genres[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].name).to.eql(\"Director updated\");\r",
                   "\r",
-                  "    pm.expect(jsonData[1].eventId).to.eql(9);\r",
-                  "    pm.expect(jsonData[1].userId).to.eql(2);\r",
-                  "    pm.expect(jsonData[1].entityId).to.eql(2);\r",
-                  "    pm.expect(jsonData[1].eventType).to.eql(\"REVIEW\");\r",
-                  "    pm.expect(jsonData[1].operation).to.eql(\"ADD\");\r",
+                  "    pm.expect(jsonData[1].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[1].name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData[1].description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData[1].releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData[1].duration).to.eql(190);\r",
+                  "    pm.expect(jsonData[1].mpa.id).to.eql(5);\r",
+                  "    if (jsonData[1].genres != null) {\r",
+                  "        pm.expect(jsonData[1].genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData[1].directors.length).to.eql(0);\r",
+                  "\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -13803,19 +14229,22 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/users/:id/feed",
+              "raw": "{{baseUrl}}/films/search?query=upDatE&by=title,director",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "users",
-                ":id",
-                "feed"
+                "films",
+                "search"
               ],
-              "variable": [
+              "query": [
                 {
-                  "key": "id",
-                  "value": "2"
+                  "key": "query",
+                  "value": "upDatE"
+                },
+                {
+                  "key": "by",
+                  "value": "title,director"
                 }
               ]
             }
@@ -13827,20 +14256,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "films",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13862,20 +14283,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "films",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13897,20 +14310,12 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "films",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                    "films"
                   ]
                 }
               },
@@ -13932,20 +14337,510 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/films/:id",
+                  "raw": "{{baseUrl}}/films",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "films",
-                    ":id"
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Search films anyway empty",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test films with directors\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.length).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/search?query=не найти&by=director,title",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "не найти"
+                },
+                {
+                  "key": "by",
+                  "value": "director,title"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
                   ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "-29029902",
-                      "description": "(Required) "
-                    }
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Search films by title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test films with directors\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.length).to.eql(1);\r",
+                  "\r",
+                  "    pm.expect(jsonData[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].name).to.eql('Film Updated');\r",
+                  "    pm.expect(jsonData[0].description).to.eql('New film update decription');    \r",
+                  "    pm.expect(jsonData[0].releaseDate).to.eql('1989-04-17');\r",
+                  "    pm.expect(jsonData[0].duration).to.eql(190);\r",
+                  "    pm.expect(jsonData[0].mpa.id).to.eql(5);\r",
+                  "    if (jsonData.genres != null) {\r",
+                  "        pm.expect(jsonData.genres.length).to.eql(0);\r",
+                  "    }\r",
+                  "    pm.expect(jsonData[0].directors.length).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/search?query=UPdat&by=title",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "UPdat"
+                },
+                {
+                  "key": "by",
+                  "value": "title"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Search films by director",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Test films with directors\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].id).to.eql(3);\r",
+                  "    pm.expect(jsonData[0].name).to.eql('New film with director');\r",
+                  "    pm.expect(jsonData[0].description).to.eql('Film with director');    \r",
+                  "    pm.expect(jsonData[0].releaseDate).to.eql('1999-04-30');\r",
+                  "    pm.expect(jsonData[0].duration).to.eql(120);\r",
+                  "    pm.expect(jsonData[0].mpa.id).to.eql(3);\r",
+                  "    pm.expect(jsonData[0].genres.length).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].genres[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].id).to.eql(1);\r",
+                  "    pm.expect(jsonData[0].directors[0].name).to.eql(\"Director updated\");\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/films/search?query=upDATE&by=director",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "films",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "upDATE"
+                },
+                {
+                  "key": "by",
+                  "value": "director"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Conflict",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/films",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "films"
                   ]
                 }
               },

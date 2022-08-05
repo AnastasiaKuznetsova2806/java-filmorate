@@ -204,6 +204,26 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id);
     }
 
+    @Override
+    public List<Film> findFilmByTitle(String query) {
+        String sql = "select * " +
+                "from FILMS F " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where lcase(F.FILM_NAME) like '%" + query.toLowerCase() + "%'; ";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+    }
+
+    @Override
+    public List<Film> findFilmByDirector(String query) {
+        String sql = "select * " +
+                "from DIRECTORS D " +
+                "left join FILM_DIRECTORS FD on D.DIRECTOR_ID = FD.DIRECTOR_ID " +
+                "left join FILMS F on F.FILM_ID = FD.FILM_ID " +
+                "left join MPA M on F.MPA_ID = M.MPA_ID " +
+                "where upper(D.DIRECTOR_NAME) like '%" + query.toUpperCase() + "%'; ";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+    }
+
     private Film makeFilm(ResultSet rs) throws SQLException {
         long id = rs.getLong("FILM_ID");
         String name = rs.getString("FILM_NAME");

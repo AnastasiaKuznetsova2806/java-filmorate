@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +85,31 @@ public class FilmService {
     //Получение списка фильмов режиссера отсортированных по количеству лайков или году выпуска
     public List<Film> findDirectorFilms(long directorId, SortingType sorting) {
         return filmStorage.findDirectorFilms(directorId, sorting);
+    }
+
+    //Поиск по названию фильмов и по режиссёру
+    public List<Film> searchFilm(String query, String titleAndDirector) {
+        List<Film> films = new ArrayList<>();
+
+        String[] strRequest = titleAndDirector.split(",");
+        switch (strRequest.length) {
+            case (1):
+                if (strRequest[0].equals("title")) {
+                    return filmStorage.findFilmByTitle(query).stream()
+                            .sorted()
+                            .collect(Collectors.toList());
+                } else {
+                    return filmStorage.findFilmByDirector(query).stream()
+                            .sorted()
+                            .collect(Collectors.toList());
+                }
+            case (2):
+                films = filmStorage.findFilmByTitle(query);
+                films.addAll(filmStorage.findFilmByDirector(query));
+        }
+        return films.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private void checkId(Long id) {
