@@ -51,7 +51,7 @@ public class ReviewDbStorage implements ReviewStorage{
                 review.getContent(),
                 review.getIsPositive(),
                 review.getReviewId());
-        return review;
+        return findReviewById(review.getReviewId());
     }
 
     @Override

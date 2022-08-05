@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.referencebook.Feed;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 
 import javax.validation.ValidationException;
 import java.util.*;
@@ -16,12 +18,15 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
+    private final FeedDbStorage feedStorage;
 
     @Autowired
     public UserService(@Qualifier("userDbStorage") UserStorage userStorage,
-                       FilmStorage filmStorage) {
+                       FilmStorage filmStorage,
+                       FeedDbStorage feedStorage) {
         this.userStorage = userStorage;
         this.filmStorage = filmStorage;
+        this.feedStorage = feedStorage;
     }
 
     //Создание пользователя
@@ -49,6 +54,9 @@ public class UserService {
         checkId(id);
         checkId(friendId);
         userStorage.addToFriends(id, friendId);
+
+        Feed feed = new Feed(id, "FRIEND", "ADD", friendId);
+        feedStorage.createFeed(feed);
     }
 
     //Удаление из друзей
@@ -56,6 +64,9 @@ public class UserService {
         checkId(id);
         checkId(friendId);
         userStorage.unfriending(id, friendId);
+
+        Feed feed = new Feed(id, "FRIEND", "REMOVE", friendId);
+        feedStorage.createFeed(feed);
     }
 
     //Список пользователей, являющихся друзьями.
@@ -94,6 +105,11 @@ public class UserService {
         return recommendationsFilms.stream()
                 .filter(film -> !userFilms.contains(film))
                 .collect(Collectors.toList());
+    }
+
+    //Получуние ленты событий пользователя
+    public List<Feed> findAllFeedById(long id) {
+        return feedStorage.findAllFeedById(id);
     }
 
     private void checkId(Long id) {

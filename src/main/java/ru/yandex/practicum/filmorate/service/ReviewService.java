@@ -2,11 +2,13 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.model.referencebook.Feed;
 import ru.yandex.practicum.filmorate.model.referencebook.Review;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.review.ReviewStorage;
 import ru.yandex.practicum.filmorate.storage.review.like.LikeReviewDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 
 import javax.validation.ValidationException;
 import java.util.List;
@@ -20,37 +22,49 @@ public class ReviewService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
     private final LikeReviewDbStorage likeReviewStorage;
+    private final FeedDbStorage feedStorage;
 
     @Autowired
     public ReviewService(ReviewStorage reviewStorage,
                          FilmStorage filmStorage,
                          UserStorage userStorage,
-                         LikeReviewDbStorage likeReviewStorage) {
+                         LikeReviewDbStorage likeReviewStorage,
+                         FeedDbStorage feedStorage) {
         this.reviewStorage = reviewStorage;
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
         this.likeReviewStorage = likeReviewStorage;
+        this.feedStorage = feedStorage;
     }
 
     //Добавление отзыва
     public Review createReview(Review review) {
         checkId(0L, review.getFilmId(), review.getUserId());
 
-        return reviewStorage.createReview(review);
+        Review newReview = reviewStorage.createReview(review);
+        Feed feed = new Feed(newReview.getUserId(), "REVIEW", "ADD", newReview.getReviewId());
+        feedStorage.createFeed(feed);
+        return newReview;
     }
 
     //Обновление отзыва
     public Review updateReview(Review review) {
         checkId(0L, review.getFilmId(), review.getUserId());
 
-        return reviewStorage.updateReview(review);
+        Review newReview = reviewStorage.updateReview(review);
+        Feed feed = new Feed(newReview.getUserId(), "REVIEW", "UPDATE", newReview.getReviewId());
+        feedStorage.createFeed(feed);
+        return newReview;
     }
 
     //Удалуние отзывф по уникальному идентификатору
     public void deleteReviewById(long id) {
         checkId(id, null, null);
+        Review review = findReviewById(id);
 
         reviewStorage.deleteReviewById(id);
+        Feed feed = new Feed(review.getUserId(), "REVIEW", "REMOVE", review.getReviewId());
+        feedStorage.createFeed(feed);
     }
 
     //Получуние отзыва по уникальному идентификатору

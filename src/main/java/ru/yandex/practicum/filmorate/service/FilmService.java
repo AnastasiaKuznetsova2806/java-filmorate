@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.referencebook.Feed;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
 import javax.validation.ValidationException;
@@ -15,10 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final FeedDbStorage feedStorage;
 
     @Autowired
-    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
+                       FeedDbStorage feedStorage) {
         this.filmStorage = filmStorage;
+        this.feedStorage = feedStorage;
     }
 
     //Создание фильма
@@ -45,12 +50,18 @@ public class FilmService {
     public void addLike(long id, long userId) {
         checkId(id);
         filmStorage.addLike(id, userId);
+
+        Feed feed = new Feed(userId, "LIKE", "ADD", id);
+        feedStorage.createFeed(feed);
     }
 
     //Удаление лайка
     public void deletingLike(long id, long userId) {
         checkId(id);
         filmStorage.deletingLike(id, userId);
+
+        Feed feed = new Feed(userId, "LIKE", "REMOVE", id);
+        feedStorage.createFeed(feed);
     }
 
     //Вывод наиболее популярных фильмов
