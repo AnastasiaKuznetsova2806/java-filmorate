@@ -14,6 +14,7 @@ import java.util.List;
 @Slf4j
 @RestController
 public class FilmController {
+    private static final String COUNT_FILMS = "10";
     private final FilmService filmService;
 
     @Autowired
@@ -58,8 +59,10 @@ public class FilmController {
     }
 
     @GetMapping(value = "/films/popular")
-    public List<Film> listOfPopularMovies(@RequestParam(defaultValue = "10", required = false) int count) {
-        return filmService.listOfPopularMovies(count);
+    public List<Film> listOfPopularMovies(@RequestParam(defaultValue = COUNT_FILMS, required = false) int count,
+                                          @RequestParam(required = false) Integer genreId,
+                                          @RequestParam(required = false) Integer year) {
+        return filmService.listOfPopularMovies(count, genreId, year);
     }
 
     @DeleteMapping(value = "/films/{filmId}")

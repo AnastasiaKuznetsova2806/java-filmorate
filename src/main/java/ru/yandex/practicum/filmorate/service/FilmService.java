@@ -66,12 +66,26 @@ public class FilmService {
     }
 
     //Вывод наиболее популярных фильмов
-    public List<Film> listOfPopularMovies(int count) {
+    public List<Film> listOfPopularMovies(int count, Integer genreId, Integer year) {
         if (count <= 0) {
             throw new ValidationException("Поле count должно быть больше 0");
         }
 
-        return filmStorage.findAllFilms().stream()
+        Collection<Film> films = findAllFilms();
+
+        if (genreId != null) {
+            films = films.stream()
+                    .filter(film -> film.getGenres().stream().anyMatch(g -> genreId.equals(g.getId())))
+                    .collect(Collectors.toList());
+        }
+
+        if (year != null) {
+            films = films.stream()
+                    .filter(film -> year.equals(film.getReleaseDate().getYear()))
+                    .collect(Collectors.toList());
+        }
+
+        return films.stream()
                 .sorted()
                 .limit(count)
                 .collect(Collectors.toList());
@@ -95,13 +109,9 @@ public class FilmService {
         switch (strRequest.length) {
             case (1):
                 if (strRequest[0].equals("title")) {
-                    return filmStorage.findFilmByTitle(query).stream()
-                            .sorted()
-                            .collect(Collectors.toList());
+                    return filmStorage.findFilmByTitle(query);
                 } else {
-                    return filmStorage.findFilmByDirector(query).stream()
-                            .sorted()
-                            .collect(Collectors.toList());
+                    return filmStorage.findFilmByDirector(query);
                 }
             case (2):
                 films = filmStorage.findFilmByTitle(query);
