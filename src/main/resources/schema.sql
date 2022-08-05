@@ -132,4 +132,18 @@ create table IF NOT EXISTS REVIEW_LIKES
         foreign key (USER_ID) references USERS ON DELETE CASCADE,
     constraint REVIEW_LIKES_PK
         primary key (REVIEW_ID, USER_ID)
-)
+);
+
+create table IF NOT EXISTS FEEDS
+(
+    FEED_ID INTEGER auto_increment,
+    FEED_TIME LONG not null,
+    USER_ID INTEGER not null,
+    EVENT_TYPE VARCHAR(200) not null,
+    OPERATION VARCHAR(200) not null,
+    ENTITY_ID INTEGER not null,
+    constraint FEEDS_FEED_ID_PK
+        primary key (FEED_ID),
+    constraint FEEDS_USERS_USER_ID_FK
+        foreign key (USER_ID) references USERS ON DELETE CASCADE
+);
