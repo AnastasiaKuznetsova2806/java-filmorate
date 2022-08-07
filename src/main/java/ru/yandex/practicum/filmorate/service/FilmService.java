@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.referencebook.Feed;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 import ru.yandex.practicum.filmorate.util.sorting.SortingType;
 
@@ -19,12 +20,15 @@ import java.util.stream.Collectors;
 public class FilmService {
     private final FilmStorage filmStorage;
     private final FeedDbStorage feedStorage;
+    private final UserStorage userStorage;
 
     @Autowired
     public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
-                       FeedDbStorage feedStorage) {
+                       FeedDbStorage feedStorage,
+                       UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.feedStorage = feedStorage;
+        this.userStorage = userStorage;
     }
 
     //Создание фильма
@@ -118,6 +122,20 @@ public class FilmService {
                 films.addAll(filmStorage.findFilmByDirector(query));
         }
         return films.stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    //Получение списка общих с другом фильмов
+    public List<Film> findListOfCommonFilms(long userId, long friendId) {
+        userStorage.findUserById(userId);
+        userStorage.findUserById(friendId);
+
+        List<Film> filmsUser = filmStorage.findAllFavoriteMovies(userId);
+        List<Film> filmsFriend = filmStorage.findAllFavoriteMovies(friendId);
+
+        return filmsUser.stream()
+                .filter(filmsFriend::contains)
                 .sorted()
                 .collect(Collectors.toList());
     }
