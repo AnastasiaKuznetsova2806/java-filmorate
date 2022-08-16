@@ -16,14 +16,17 @@ public interface UserStorage {
     Collection<User> findAllUsers();
 
     //Получить пользователя по уникальному идентификатору
-    User findUserById(Long id);
+    User findUserById(long id);
 
-    //Добавление в друзья
-    void addToFriends(Long id, Long friendId);
+    //Добавить в друзья
+    void addToFriends(long id, long friendId);
 
-    //Удаление из друзей
-    void unfriending(Long id, Long friendId);
+    //Удалить из друзей
+    void unfriending(long id, long friendId);
 
-    //Список пользователей, являющихся друзьями.
-    List<Long> findFriendList(Long id);
+    //Получить список пользователей, являющихся друзьями.
+    List<Long> findFriendList(long id);
+
+    //Удалить пользователя
+    void deleteUserById(long userId);
 }

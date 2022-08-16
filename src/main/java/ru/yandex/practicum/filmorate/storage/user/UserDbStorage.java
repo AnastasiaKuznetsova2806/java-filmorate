@@ -40,7 +40,7 @@ public class UserDbStorage implements UserStorage{
     public User createUser(User user) {
         dataValidation.userdataVerification(user);
 
-        String sql = "insert into USERS (EMAIL, LOGIN, USER_NAME, BIRTHDAY) values (?, ?, ?, ?);";
+        String sql = "insert into USERS (EMAIL, LOGIN, USER_NAME, BIRTHDAY) values (?, ?, ?, ?); ";
 
         KeyHolder id = new GeneratedKeyHolder();
 
@@ -61,7 +61,7 @@ public class UserDbStorage implements UserStorage{
         dataValidation.userdataVerification(user);
         findUserById(user.getId());
 
-        String sql = "update USERS set EMAIL = ?, LOGIN = ?, USER_NAME = ?, BIRTHDAY = ? where USER_ID = ?;";
+        String sql = "update USERS set EMAIL = ?, LOGIN = ?, USER_NAME = ?, BIRTHDAY = ? where USER_ID = ?; ";
 
         jdbcTemplate.update(sql,
                 user.getEmail(),
@@ -79,8 +79,8 @@ public class UserDbStorage implements UserStorage{
     }
 
     @Override
-    public User findUserById(Long id) {
-        String sql = "select * from USERS where USER_ID = ?;";
+    public User findUserById(long id) {
+        String sql = "select * from USERS where USER_ID = ?; ";
 
         User user = jdbcTemplate.query(sql, rs -> rs.next() ? makeUser(rs) : null, id);
 
@@ -91,22 +91,31 @@ public class UserDbStorage implements UserStorage{
     }
 
     //Добавление в друзья
-    public void addToFriends(Long id, Long friendId) {
+    public void addToFriends(long id, long friendId) {
         findUserById(id);
         findUserById(friendId);
         friendStorage.addToFriends(id, friendId);
     }
 
     //Удаление из друзей
-    public void unfriending(Long id, Long friendId) {
+    public void unfriending(long id, long friendId) {
         findUserById(id);
         findUserById(friendId);
         friendStorage.unfriending(id, friendId);
     }
 
     //Список пользователей, являющихся друзьями.
-    public List<Long> findFriendList(Long id) {
+    public List<Long> findFriendList(long id) {
         return friendStorage.findFriendList(id);
+    }
+
+    //Удаление пользователя
+    @Override
+    public void deleteUserById(long userId) {
+        findUserById(userId);
+
+        String sql = "delete from USERS where USER_ID = ?; ";
+        jdbcTemplate.update(sql, userId);
     }
 
     private User makeUser(ResultSet rs) throws SQLException {

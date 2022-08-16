@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.referencebook.Director;
 import ru.yandex.practicum.filmorate.model.referencebook.Genre;
 import ru.yandex.practicum.filmorate.model.referencebook.Mpa;
 import ru.yandex.practicum.filmorate.util.MpaAdapter;
@@ -26,18 +27,17 @@ public class Film implements Comparable<Film>{
     private final LocalDate releaseDate;
     @Min(value = 0, message = "Продолжительность фильма должна быть положительной")
     private final int duration;
-    private Set<Long> likes;
+    private Set<Long> likes = new HashSet<>();
     @NotNull(message = "Рейтинг не может быть пустым")
     private Mpa mpa;
-    private Set<Genre> genres;
+    private Set<Genre> genres = new HashSet<>();
+    private Set<Director> directors = new HashSet<>();
 
     public Film(String name, String description, LocalDate releaseDate, Integer duration) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.likes = new HashSet<>();
-        this.genres = new HashSet<>();
     }
 
     public Film(String name, String description, LocalDate releaseDate, Integer duration, Mpa mpa) {
@@ -45,9 +45,7 @@ public class Film implements Comparable<Film>{
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.likes = new HashSet<>();
         this.mpa = mpa;
-        this.genres = new HashSet<>();
     }
 
     @Override

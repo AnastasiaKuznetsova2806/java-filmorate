@@ -19,7 +19,7 @@ public class FriendDbStorage {
     }
 
     //Добавление в друзья
-    public void addToFriends(Long id, Long friendId) {
+    public void addToFriends(long id, long friendId) {
         String sql = "insert into FRIENDS (USER_ID, FRIEND_ID) values (?, ?);";
 
         jdbcTemplate.update(sql, id, friendId);
@@ -29,7 +29,7 @@ public class FriendDbStorage {
     }
 
     //Удаление из друзей
-    public void unfriending(Long id, Long friendId) {
+    public void unfriending(long id, long friendId) {
         String sql = "delete from FRIENDS where USER_ID = ? and FRIEND_ID = ?";
 
         jdbcTemplate.update(sql, id, friendId);
@@ -38,7 +38,7 @@ public class FriendDbStorage {
     }
 
     //Список пользователей, являющихся друзьями.
-    public List<Long> findFriendList(Long id) {
+    public List<Long> findFriendList(long id) {
         String sql = "select FRIEND_ID from FRIENDS where USER_ID = ?;";
 
         return jdbcTemplate.queryForList(sql, Long.class, id);
@@ -50,21 +50,21 @@ public class FriendDbStorage {
     }
 
     //Обновление статуса дружбы
-    private void updateFriendStatus(Long id, Long friendId, Integer status) {
+    private void updateFriendStatus(long id, long friendId, int status) {
         String sql = "update FRIENDS set STATUS_ID = ? where USER_ID = ? and FRIEND_ID = ?;";
         jdbcTemplate.update(sql, status, id, friendId);
     }
 
     //Проверка статуса дружбы
-    private void checkStatus (Long id, Long friendId) {
+    private void checkStatus (long id, long friendId) {
         String sql = "select " +
-                "  case\n" +
-                "    when f2.USER_ID is null then 1\n" +
-                "    else 2\n" +
-                "  end status\n" +
-                "from FRIENDS f\n" +
-                "         left join FRIENDS f2 ON f2.USER_ID = f.FRIEND_ID\n" +
-                "where f.USER_ID = ? and f.FRIEND_ID = ?;";
+                "  case " +
+                "    when f2.USER_ID is null then 1 " +
+                "    else 2 " +
+                "  end status " +
+                "from FRIENDS f " +
+                "         left join FRIENDS f2 ON f2.USER_ID = f.FRIEND_ID " +
+                "where f.USER_ID = ? and f.FRIEND_ID = ?; ";
 
         FriendStatus status = jdbcTemplate.query(sql, rs -> rs.next() ? makeFriendStatus(rs) : null, id, friendId);
 

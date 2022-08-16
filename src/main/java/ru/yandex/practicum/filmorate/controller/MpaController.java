@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.Collection;
 
-@RestController
 @Slf4j
+@RestController
 public class MpaController {
     private final MpaService mpaService;
 
@@ -26,7 +26,7 @@ public class MpaController {
     }
 
     @GetMapping(value = "/mpa/{id}")
-    public Mpa findMpaById(@PathVariable Integer id) {
+    public Mpa findMpaById(@PathVariable int id) {
         return mpaService.findMpaById(id);
     }
 }

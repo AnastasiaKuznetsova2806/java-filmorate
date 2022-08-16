@@ -17,7 +17,7 @@ public class LikeDbStorage {
     }
 
     //Добавление лайка
-    public void addLike(Long id, Long userId) {
+    public void addLike(long id, long userId) {
         checkUser(userId);
 
         String sql = "insert into LIKES (FILM_ID, USER_ID) values (?, ?)";
@@ -26,7 +26,7 @@ public class LikeDbStorage {
     }
 
     //Удаление лайка
-    public void deletingLike(Long id, Long userId) {
+    public void deletingLike(long id, long userId) {
         checkLike(id, userId);
 
         String sql = "delete from LIKES where FILM_ID = ? and USER_ID = ?;";
@@ -40,7 +40,7 @@ public class LikeDbStorage {
     }
 
     //Проверка лайка
-    private void checkLike(Long id, Long userId) {
+    private void checkLike(long id, long userId) {
         String sql = "select USER_ID from LIKES where FILM_ID = ? and USER_ID = ?;";
 
         List<Integer> like = jdbcTemplate.queryForList(sql, Integer.class, id, userId);
@@ -50,7 +50,7 @@ public class LikeDbStorage {
         }
     }
 
-    private void checkUser(Long userId) {
+    private void checkUser(long userId) {
         String sql = "select USER_ID from USERS where USER_ID = ?;";
 
         List<Integer> users = jdbcTemplate.queryForList(sql, Integer.class, userId);

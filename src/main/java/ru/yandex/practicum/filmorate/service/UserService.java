@@ -3,23 +3,30 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.referencebook.Feed;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.user.feed.FeedDbStorage;
 
 import javax.validation.ValidationException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserStorage userStorage;
+    private final FilmStorage filmStorage;
+    private final FeedDbStorage feedStorage;
 
     @Autowired
-    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage,
+                       FilmStorage filmStorage,
+                       FeedDbStorage feedStorage) {
         this.userStorage = userStorage;
+        this.filmStorage = filmStorage;
+        this.feedStorage = feedStorage;
     }
 
     //Создание пользователя
@@ -38,26 +45,32 @@ public class UserService {
     }
 
     //Получение пользователя по уникальному идентификатору
-    public User findUserById(Long id) {
+    public User findUserById(long id) {
         return userStorage.findUserById(id);
     }
 
     //Добавление в друзья
-    public void addToFriends(Long id, Long friendId) {
+    public void addToFriends(long id, long friendId) {
         checkId(id);
         checkId(friendId);
         userStorage.addToFriends(id, friendId);
+
+        Feed feed = new Feed(id, "FRIEND", "ADD", friendId);
+        feedStorage.createFeed(feed);
     }
 
     //Удаление из друзей
-    public void unfriending(Long id, Long friendId) {
+    public void unfriending(long id, long friendId) {
         checkId(id);
         checkId(friendId);
         userStorage.unfriending(id, friendId);
+
+        Feed feed = new Feed(id, "FRIEND", "REMOVE", friendId);
+        feedStorage.createFeed(feed);
     }
 
     //Список пользователей, являющихся друзьями.
-    public List<User> findFriendList(Long id) {
+    public List<User> findFriendList(long id) {
         checkId(id);
 
         Set<Long> friendListId = new HashSet<>(userStorage.findFriendList(id));
@@ -65,7 +78,7 @@ public class UserService {
     }
 
     //Вывод списка общих друзей
-    public List<User> findListOfCommonFriends(Long id, Long otherId) {
+    public List<User> findListOfCommonFriends(long id, long otherId) {
         checkId(id);
         checkId(otherId);
 
@@ -77,6 +90,26 @@ public class UserService {
                 .collect(Collectors.toSet());
 
         return fillUsersList(friendSetId);
+    }
+
+    //Удаление пользователя
+    public void deleteUserById(long userId) {
+        userStorage.deleteUserById(userId);
+    }
+
+    //Получуние списка рекомендованных фильмов для пользователя
+    public List<Film> recommendationsFilms(long id) {
+        checkId(id);
+        List<Film> userFilms = new ArrayList<>(filmStorage.findAllFavoriteMovies(id));
+        List<Film> recommendationsFilms = new ArrayList<>(filmStorage.recommendationsFilm(id));
+        return recommendationsFilms.stream()
+                .filter(film -> !userFilms.contains(film))
+                .collect(Collectors.toList());
+    }
+
+    //Получуние ленты событий пользователя
+    public List<Feed> findAllFeedById(long id) {
+        return feedStorage.findAllFeedById(id);
     }
 
     private void checkId(Long id) {
