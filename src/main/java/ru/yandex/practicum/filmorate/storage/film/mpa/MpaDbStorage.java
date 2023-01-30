@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.storage.film.mpa;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
@@ -10,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
+@Slf4j
 @Component
 public class MpaDbStorage implements MpaStorage{
     private final JdbcTemplate jdbcTemplate;
@@ -20,6 +23,7 @@ public class MpaDbStorage implements MpaStorage{
     }
 
     @Override
+    @Cacheable("mpa")
     public Collection<Mpa> findAllMpa() {
         String sql = "select * from MPA order by MPA_ID;";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeMpa(rs));
